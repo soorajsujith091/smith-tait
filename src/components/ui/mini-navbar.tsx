@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const AnimatedNavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   const defaultTextColor = 'text-[var(--color-white)]/70';
@@ -21,6 +22,7 @@ const AnimatedNavLink = ({ href, children }: { href: string; children: React.Rea
 
 export function MiniNavbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [headerShapeClass, setHeaderShapeClass] = useState('rounded-full');
   const shapeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -55,12 +57,32 @@ export function MiniNavbar() {
   );
 
   const navLinksData = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Expertise', href: '/expertise' },
-    { label: 'Projects', href: '/projects' },
-    { label: 'Clients', href: '/clients' },
-    { label: 'News', href: '/news' },
+    { label: "Home", href: "/" },
+    {
+      label: "About",
+      href: "/about",
+      dropdown: [
+        { label: "About Smith Tait", href: "/about" },
+        { label: "Philosophy", href: "/about#philosophy" },
+        { label: "Legacy", href: "/legacy" },
+        { label: "Our Team", href: "/team" },
+      ],
+    },
+    {
+      label: "Expertise",
+      href: "/expertise",
+      dropdown: [
+        { label: "Hospitality", href: "/expertise#hospitality" },
+        { label: "Residential", href: "/expertise#residential" },
+        { label: "Facade Lighting", href: "/expertise#facade" },
+        { label: "Landscape Lighting", href: "/expertise#landscape" },
+        { label: "Public Realm", href: "/expertise#public-realm" },
+        { label: "Mixed-Use / Commercial", href: "/expertise#mixed-use" },
+      ],
+    },
+    { label: "Projects", href: "/projects" },
+    { label: "Clients", href: "/clients" },
+    { label: "News", href: "/news" },
   ];
 
   const contactButtonElement = (
@@ -85,9 +107,40 @@ export function MiniNavbar() {
 
         <nav className="hidden sm:flex items-center space-x-6">
           {navLinksData.map((link) => (
-            <AnimatedNavLink key={link.href} href={link.href}>
-              {link.label}
-            </AnimatedNavLink>
+            <div
+              key={link.label}
+              className="relative py-2"
+              onMouseEnter={() => link.dropdown && setActiveDropdown(link.label)}
+              onMouseLeave={() => setActiveDropdown(null)}
+            >
+              <AnimatedNavLink href={link.href}>
+                {link.label}
+              </AnimatedNavLink>
+
+              <AnimatePresence>
+                {link.dropdown && activeDropdown === link.label && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-[100%] left-1/2 -translate-x-1/2 pt-2 z-50"
+                  >
+                    <div className="bg-[var(--color-navy)] border border-white/10 rounded-lg py-2 min-w-[220px] shadow-xl backdrop-blur-md">
+                      {link.dropdown.map((sub) => (
+                        <a
+                          key={sub.label}
+                          href={sub.href}
+                          className="block px-5 py-2.5 text-sm font-body text-[var(--color-white)]/70 hover:text-[var(--color-accent)] hover:bg-white/5 transition-all duration-200"
+                        >
+                          {sub.label}
+                        </a>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           ))}
         </nav>
 

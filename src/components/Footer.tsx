@@ -149,7 +149,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-sm font-body text-[var(--color-white)]/40">
-            © {new Date().getFullYear()} Smith Tait. All rights reserved.
+            Copyright {new Date().getFullYear()} © Smith Tait | Made with ❤️ Creatox Designs
           </p>
           <div className="flex items-center gap-8">
             {footerLinks.legal.map((link) => (

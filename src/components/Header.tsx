@@ -41,13 +41,28 @@ const navLinks = [
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [showMiniNav, setShowMiniNav] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 80);
+      const currentScrollY = window.scrollY;
+      
+      setScrolled(currentScrollY > 80);
+      
+      // If we are past 80px AND scrolling up, show mini nav
+      if (currentScrollY > 80 && currentScrollY < lastScrollY) {
+        setShowMiniNav(true);
+      } else {
+        setShowMiniNav(false);
+      }
+      
+      lastScrollY = currentScrollY;
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -191,7 +206,7 @@ export function Header() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {scrolled && (
+        {showMiniNav && (
           <motion.div
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}

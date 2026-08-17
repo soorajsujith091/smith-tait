@@ -46,7 +46,7 @@ export function VisionSection() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative bg-section-paper text-[var(--color-navy)] pt-24 pb-12 overflow-hidden">
+    <section ref={containerRef} className="relative bg-section-paper text-[var(--color-navy)] pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden">
       {/* Film grain style overlay */}
       <div 
         className="absolute inset-0 pointer-events-none z-0 mix-blend-multiply opacity-[0.03]"
@@ -71,7 +71,7 @@ export function VisionSection() {
             </Link>
           </div>
           <div className="vision-img-1 order-1 md:order-2">
-            <div className="relative aspect-[3/2] w-full md:w-[125%] md:-mr-[25%] shadow-xl rounded-[24px] overflow-hidden">
+            <div className="relative aspect-[4/5] md:aspect-square w-full md:w-[120%] md:-mr-[20%] shadow-xl rounded-none overflow-hidden">
               <Image src="/images/projects/landscape-01.jpg" alt="Joyful places" fill className="object-cover" sizes="(max-width: 768px) 100vw, 60vw" />
             </div>
           </div>
@@ -80,7 +80,7 @@ export function VisionSection() {
         {/* Block 2 */}
         <div className="vision-block-2 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center mb-12 md:mb-24">
           <div className="vision-img-2 order-1 md:order-1 pt-0 md:pt-12">
-            <div className="relative aspect-[3/2] w-full md:w-[125%] md:-ml-[25%] shadow-xl rounded-[24px] overflow-hidden">
+            <div className="relative aspect-[4/5] md:aspect-square w-full md:w-[120%] md:-ml-[20%] shadow-xl rounded-none overflow-hidden">
               <Image src="/images/general/aerial-view-streets-office-building-business-district.jpg" alt="Impactful projects" fill className="object-cover" sizes="(max-width: 768px) 100vw, 60vw" />
             </div>
           </div>

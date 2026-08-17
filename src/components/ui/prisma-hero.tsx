@@ -110,7 +110,7 @@ export const PrismaHero = () => {
         <div className="absolute inset-y-0 left-0 flex items-center px-4 md:px-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
           <button 
             onClick={prevSlide}
-            className="p-3 rounded-full bg-black/30 text-white backdrop-blur-md hover:bg-black/50 transition-colors"
+            className="p-3 rounded-full bg-white/90 text-[var(--color-navy)] shadow-md backdrop-blur-md hover:bg-[var(--color-accent)] transition-colors"
             aria-label="Previous slide"
           >
             <ChevronLeft size={24} />
@@ -119,7 +119,7 @@ export const PrismaHero = () => {
         <div className="absolute inset-y-0 right-0 flex items-center px-4 md:px-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
           <button 
             onClick={nextSlide}
-            className="p-3 rounded-full bg-black/30 text-white backdrop-blur-md hover:bg-black/50 transition-colors"
+            className="p-3 rounded-full bg-white/90 text-[var(--color-navy)] shadow-md backdrop-blur-md hover:bg-[var(--color-accent)] transition-colors"
             aria-label="Next slide"
           >
             <ChevronRight size={24} />

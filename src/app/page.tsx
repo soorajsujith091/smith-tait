@@ -84,9 +84,6 @@ export default function HomePage() {
       {/* ===== HERO ===== */}
       <PrismaHero />
 
-      {/* ===== VISION STATEMENT ===== */}
-      <VisionSection />
-
       {/* ===== ABOUT PREVIEW ===== */}
       <section className="bg-section-paper section-padding pt-0">
         <div className="container-st">
@@ -101,7 +98,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.3, duration: 0.6 }}
+                transition={{ delay: 0.1, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               >
                 Founded on the modernist principles of Thomas Smith Tait in 1933,
                 Smith Tait has evolved into a leading architectural lighting design
@@ -114,7 +111,7 @@ export default function HomePage() {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 0.2, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               >
                 <Link
                   href="/about"
@@ -129,11 +126,11 @@ export default function HomePage() {
               </motion.div>
             </div>
             <motion.div
-              className="relative aspect-square md:aspect-[5/4] lg:aspect-[4/4] rounded-[var(--radius-media)] overflow-hidden"
-              initial={{ opacity: 0, x: 40 }}
+              className="relative aspect-[4/5] md:aspect-square w-full lg:w-[115%] lg:-mr-[15%] rounded-none overflow-hidden shadow-xl"
+              initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <Image
                 src="/images/general/about-01.jpg"
@@ -268,8 +265,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== VISION STATEMENT ===== */}
+      <VisionSection />
+
       {/* ===== ACHIEVEMENTS & CLIENTS ===== */}
-      <section className="bg-section-dark section-padding">
+      <section className="bg-[#3f1b21] section-padding">
         <div className="container-st">
           <SectionLabel label="Impact" light />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16">
