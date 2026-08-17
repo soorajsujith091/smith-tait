@@ -15,6 +15,8 @@ import { projects } from "@/data/projects";
 import { clients } from "@/data/clients";
 import { newsArticles } from "@/data/news";
 import { PrismaHero } from "@/components/ui/prisma-hero";
+import { VisionSection } from "@/components/ui/VisionSection";
+import { FilterBar } from "@/components/ui/FilterBar";
 
 const heroImages = [
   "/images/projects/hotel-lobby-01.jpg",
@@ -64,6 +66,11 @@ const expertiseAreas = [
 
 export default function HomePage() {
   const [heroIndex, setHeroIndex] = useState(0);
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const filteredProjects = activeFilter === "All" 
+    ? projects.slice(0, 8) 
+    : projects.filter(p => p.category === activeFilter).slice(0, 8);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -77,8 +84,11 @@ export default function HomePage() {
       {/* ===== HERO ===== */}
       <PrismaHero />
 
+      {/* ===== VISION STATEMENT ===== */}
+      <VisionSection />
+
       {/* ===== ABOUT PREVIEW ===== */}
-      <section className="bg-section-paper section-padding">
+      <section className="bg-section-paper section-padding pt-0">
         <div className="container-st">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
@@ -141,7 +151,7 @@ export default function HomePage() {
       <section className="bg-section-navy section-padding">
         <div className="container-st">
           <SectionLabel label="Featured Projects" light />
-          <div className="flex items-end justify-between mb-12">
+          <div className="flex items-end justify-between mb-8">
             <AnimatedHeading as="h2" className="text-[var(--color-white)]">
               Selected Work
             </AnimatedHeading>
@@ -156,8 +166,11 @@ export default function HomePage() {
               />
             </Link>
           </div>
+
+          <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} light />
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
-            {projects.slice(0, 4).map((project, i) => {
+            {filteredProjects.map((project, i) => {
               // Cycle through rich architectural colors
               const colors = ["220 30% 20%", "350 30% 25%", "45 40% 25%", "210 20% 30%"];
               const themeColor = colors[i % colors.length];

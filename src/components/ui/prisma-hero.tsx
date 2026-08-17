@@ -1,6 +1,8 @@
-import { motion, useInView } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { useRef } from "react";
+"use client";
+
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -49,19 +51,54 @@ const navItems = [
   { label: "Contact", href: "/contact" }
 ];
 
+const heroImages = [
+  "/images/general/texture-perspective-transport-motion-roadside-travel.jpg",
+  "/images/general/aerial-view-streets-office-building-business-district.jpg",
+  "/images/general/vertical-distant-shot-singapore-marina-bay-sands-nighttime-singapore.jpg",
+  "/images/general/view-light-lamp-with-futuristic-design.jpg",
+];
+
 export const PrismaHero = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % heroImages.length);
+    }, 12000); // very slow slider (12 seconds)
+    return () => clearInterval(timer);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % heroImages.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+  };
+
   return (
     <section className="h-screen w-full p-2 sm:p-4">
-      <div className="relative h-full w-full overflow-hidden rounded-2xl md:rounded-[2rem]">
+      <div className="relative h-full w-full overflow-hidden rounded-2xl md:rounded-[2rem] group">
         
-        {/* Background image */}
-        <Image
-          src="/images/general/aerial-view-streets-office-building-business-district.jpg"
-          alt="Aerial view of business district"
-          fill
-          priority
-          className="absolute inset-0 object-cover"
-        />
+        {/* Background image slider */}
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 3.0, ease: "easeInOut" }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={heroImages[currentIndex]}
+              alt={`Hero background ${currentIndex + 1}`}
+              fill
+              priority
+              className="object-cover"
+            />
+          </motion.div>
+        </AnimatePresence>
 
         {/* Noise overlay */}
         <div className="pointer-events-none absolute inset-0 opacity-[0.4] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
@@ -69,7 +106,25 @@ export const PrismaHero = () => {
         {/* Gradient overlay */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[var(--color-navy)]/40 via-transparent to-[var(--color-navy)]/80" />
 
-
+        {/* Slider Controls */}
+        <div className="absolute inset-y-0 left-0 flex items-center px-4 md:px-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+          <button 
+            onClick={prevSlide}
+            className="p-3 rounded-full bg-black/30 text-white backdrop-blur-md hover:bg-black/50 transition-colors"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft size={24} />
+          </button>
+        </div>
+        <div className="absolute inset-y-0 right-0 flex items-center px-4 md:px-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+          <button 
+            onClick={nextSlide}
+            className="p-3 rounded-full bg-black/30 text-white backdrop-blur-md hover:bg-black/50 transition-colors"
+            aria-label="Next slide"
+          >
+            <ChevronRight size={24} />
+          </button>
+        </div>
 
         {/* Hero content */}
         <div className="absolute bottom-0 left-0 right-0 px-4 pb-6 sm:px-6 md:px-10 md:pb-10">

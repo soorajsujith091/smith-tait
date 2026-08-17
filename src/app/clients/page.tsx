@@ -13,7 +13,7 @@ export default function ClientsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-section-navy pt-32 pb-16 md:pt-40 md:pb-20">
+      <section className="bg-section-navy pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center">
         <div className="container-st">
           <SectionLabel label="Clients" light />
           <AnimatedHeading as="h1" className="text-[var(--color-white)] max-w-3xl">

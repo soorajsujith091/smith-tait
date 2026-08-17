@@ -15,7 +15,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-section-navy pt-32 pb-16 md:pt-40 md:pb-20">
+      <section className="bg-section-navy pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center">
         <div className="container-st">
           <SectionLabel label="About" light />
           <AnimatedHeading as="h1" className="text-[var(--color-white)] max-w-4xl">
@@ -158,8 +158,8 @@ export default function AboutPage() {
               <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8">
-            {teamMembers.slice(0, 3).map((member, i) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
+            {teamMembers.map((member, i) => (
               <TeamCard key={member.name} member={member} index={i} />
             ))}
           </div>

@@ -58,9 +58,7 @@ export function MiniNavbar() {
     { label: 'Home', href: '/' },
     { label: 'About', href: '/about' },
     { label: 'Expertise', href: '/expertise' },
-    { label: 'Legacy', href: '/legacy' },
     { label: 'Projects', href: '/projects' },
-    { label: 'Team', href: '/team' },
     { label: 'Clients', href: '/clients' },
     { label: 'News', href: '/news' },
   ];
