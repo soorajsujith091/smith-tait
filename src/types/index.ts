@@ -4,7 +4,8 @@ export type ProjectCategory =
   | "Facade"
   | "Landscape"
   | "Public Realm"
-  | "Mixed-Use";
+  | "Mixed-Use"
+  | "Institutional";
 
 export type Project = {
   slug: string;

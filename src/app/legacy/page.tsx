@@ -28,9 +28,9 @@ export default function LegacyPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            <SectionLabel label="Heritage" light />
+            <SectionLabel label="Our Inspiration" light />
             <h1 className="text-section font-display text-[var(--color-white)]">
-              Our Legacy
+              The Story of Smith Tait
             </h1>
           </motion.div>
         </div>
@@ -46,7 +46,7 @@ export default function LegacyPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
             >
-              <SectionLabel label="The Founder" />
+              <SectionLabel label="The Architect" />
               <h2 className="text-heading font-display text-[var(--color-navy)] mb-6">
                 Thomas Smith Tait
                 <span className="block text-lg font-light text-[var(--color-grey)] mt-2">
@@ -60,10 +60,13 @@ export default function LegacyPage() {
                 honest, and forward-looking.
               </p>
               <p className="text-body text-[var(--color-grey)] leading-relaxed">
-                His masterwork, St Andrew&apos;s House in Edinburgh (1939), remains one of the finest
+                His masterwork, St Andrew's House in Edinburgh (1939), remains one of the finest
                 examples of Art Deco civic architecture in the United Kingdom. The Tower of Empire,
                 designed for the 1938 Empire Exhibition in Glasgow, demonstrated his ambition to
                 push engineering and aesthetics to their limits.
+              </p>
+              <p className="text-body text-[var(--color-navy)] font-medium leading-relaxed mt-6 border-l-2 border-[var(--color-accent)] pl-4">
+                Today, our lighting design studio is named in honor of his uncompromising vision. We integrate his commitment to functional beauty and material honesty into every illuminated space we craft across the modern world.
               </p>
             </motion.div>
             <motion.div
@@ -138,7 +141,7 @@ export default function LegacyPage() {
         <div className="container-st">
           <SectionLabel label="Our Journey" light />
           <AnimatedHeading as="h2" className="text-[var(--color-white)] mb-12">
-            90 Years of Design
+            Evolution of Design
           </AnimatedHeading>
           <Timeline milestones={timelineMilestones} />
         </div>

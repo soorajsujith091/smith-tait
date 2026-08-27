@@ -6,13 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  MapPin,
-  Calendar,
-  Building2,
-  Layers,
-  User,
   ArrowLeft,
-  ArrowRight,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -31,7 +25,7 @@ export default function ProjectDetailPage() {
 
   if (!project) {
     return (
-      <section className="bg-section-paper section-padding pt-32">
+      <section className="bg-section-paper section-padding pt-32 min-h-screen flex items-center justify-center">
         <div className="container-st text-center">
           <h1 className="text-heading font-display">Project Not Found</h1>
           <Link href="/projects" className="btn-primary mt-8 inline-flex">
@@ -50,179 +44,146 @@ export default function ProjectDetailPage() {
     .filter((p) => p.slug !== slug && p.category === project.category)
     .slice(0, 3);
 
-  const metaItems = [
-    { icon: User, label: "Client", value: project.client },
-    { icon: MapPin, label: "Location", value: project.location },
-    { icon: Building2, label: "Type", value: project.category },
-    { icon: Layers, label: "Scope", value: project.scope },
-    { icon: Calendar, label: "Year", value: project.year.toString() },
-  ];
+  // For the presentation view
+  const consultant = project.credits && project.credits.length > 0 ? project.credits[0].name : "Smith Tait";
+  const status = project.year >= 2024 ? "Ongoing" : "Completed";
+
+  // De-duplicate hero image if it's already in the gallery
+  const allImages = project.gallery.includes(project.heroImage) 
+    ? project.gallery 
+    : [project.heroImage, ...project.gallery];
 
   return (
-    <>
-      {/* Hero */}
-      <section className="relative h-[70vh] min-h-[500px]">
-        <Image
-          src={project.heroImage}
-          alt={`${project.name} — ${project.category} lighting design by Smith Tait`}
-          fill
-          className="object-cover img-cinematic"
-          priority
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink-dark)]/80 via-transparent to-[var(--color-ink-dark)]/40" />
+    <div className="bg-white min-h-screen">
+      
+      {/* Desktop Slide Layout */}
+      <div className="flex flex-col lg:flex-row min-h-screen">
+        
+        {/* Left Sidebar (Dark) */}
+        <div className="w-full lg:w-[35%] xl:w-[30%] bg-[#12121A] text-white p-6 sm:p-10 lg:p-12 lg:sticky lg:top-0 lg:h-screen flex flex-col justify-center relative z-20 pt-[100px] lg:pt-0">
+          
+          <Link
+            href="/projects"
+            className="hidden lg:inline-flex items-center gap-2 text-xs font-body tracking-wider text-[var(--color-white)]/50 hover:text-[var(--color-accent)] transition-colors absolute top-[100px] left-12 uppercase z-30"
+          >
+            <ArrowLeft size={14} />
+            All Projects
+          </Link>
 
-        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-          <div className="container-st">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 text-sm font-body text-[var(--color-white)]/60 hover:text-[var(--color-accent)] transition-colors mb-4"
-              >
-                <ArrowLeft size={14} />
-                All Projects
-              </Link>
-              <span className="text-caption text-[var(--color-accent)] block mb-3">
-                {project.category}
-              </span>
-              <h1 className="text-section font-display text-[var(--color-white)]">
-                {project.name}
-              </h1>
-            </motion.div>
+          <div className="mt-4 lg:mt-0 max-w-sm">
+            <span className="text-[10px] md:text-xs font-display tracking-[0.2em] uppercase text-white/50 block mb-2">
+              OUR PROJECTS
+            </span>
+            <h1 className="text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-display uppercase tracking-widest mb-10 lg:mb-16 text-white">
+              {project.category}
+            </h1>
+
+            <div className="space-y-4">
+              <div className="grid grid-cols-[110px_1fr] gap-4 border-b border-white/10 pb-4 items-start">
+                <span className="text-[10px] md:text-xs font-display font-medium tracking-widest uppercase text-white/50 mt-0.5">NAME</span>
+                <span className="text-xs md:text-sm font-display tracking-wider uppercase text-white leading-snug">{project.name}</span>
+              </div>
+              <div className="grid grid-cols-[110px_1fr] gap-4 border-b border-white/10 pb-4 items-start">
+                <span className="text-[10px] md:text-xs font-display font-medium tracking-widest uppercase text-white/50 mt-0.5">LOCATION</span>
+                <span className="text-xs md:text-sm font-display tracking-wider uppercase text-white leading-snug">{project.location}</span>
+              </div>
+              <div className="grid grid-cols-[110px_1fr] gap-4 border-b border-white/10 pb-4 items-start">
+                <span className="text-[10px] md:text-xs font-display font-medium tracking-widest uppercase text-white/50 mt-0.5">CLIENT</span>
+                <span className="text-xs md:text-sm font-display tracking-wider uppercase text-white leading-snug">{project.client}</span>
+              </div>
+              <div className="grid grid-cols-[110px_1fr] gap-4 border-b border-white/10 pb-4 items-start">
+                <span className="text-[10px] md:text-xs font-display font-medium tracking-widest uppercase text-white/50 mt-0.5">CONSULTANT</span>
+                <span className="text-xs md:text-sm font-display tracking-wider uppercase text-white leading-snug">{consultant}</span>
+              </div>
+              <div className="grid grid-cols-[110px_1fr] gap-4 border-b border-white/10 pb-4 items-start">
+                <span className="text-[10px] md:text-xs font-display font-medium tracking-widest uppercase text-white/50 mt-0.5">SCOPE</span>
+                <span className="text-xs md:text-sm font-display tracking-wider uppercase text-white leading-snug">{project.scope}</span>
+              </div>
+              <div className="grid grid-cols-[110px_1fr] gap-4 border-b border-white/10 pb-4 items-start">
+                <span className="text-[10px] md:text-xs font-display font-medium tracking-widest uppercase text-white/50 mt-0.5">STATUS</span>
+                <span className="text-xs md:text-sm font-display tracking-wider uppercase text-white leading-snug">{status}</span>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* Meta row */}
-      <section className="bg-section-navy py-8">
+        {/* Right Content (Images) */}
+        <div className="w-full lg:w-[65%] xl:w-[70%] bg-white pt-[88px] lg:pt-[100px] px-4 sm:px-8 lg:px-12 pb-20 relative flex flex-col justify-center min-h-[50vh] lg:min-h-screen">
+          
+          {/* Vertical Text overlay for desktop */}
+          <div className="hidden xl:flex absolute right-4 top-0 bottom-0 items-center justify-center pointer-events-none z-10">
+             <div className="flex items-center gap-4 rotate-90 translate-x-[40%] origin-center">
+                <span className="text-xs font-display tracking-[0.4em] uppercase text-black/30 whitespace-nowrap">SMITH TAIT</span>
+                <div className="h-px w-32 bg-black/20" />
+             </div>
+          </div>
+
+          <div className="w-full max-w-6xl mx-auto xl:pr-12">
+             <div className="columns-1 md:columns-2 gap-4 space-y-4">
+                {allImages.map((img, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1, duration: 0.6 }}
+                    className="relative w-full overflow-hidden group cursor-pointer break-inside-avoid"
+                    onClick={() => {
+                      setLightboxIndex(i);
+                      setLightboxOpen(true);
+                    }}
+                  >
+                    <Image 
+                      src={img} 
+                      alt={`${project.name} slide image ${i + 1}`} 
+                      width={800}
+                      height={600}
+                      className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" 
+                      loading={i < 2 ? "eager" : "lazy"}
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 pointer-events-none" />
+                  </motion.div>
+                ))}
+             </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Description Content (Below the fold) */}
+      <section className="bg-section-paper section-padding border-t border-black/5">
         <div className="container-st">
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-5 gap-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-          >
-            {metaItems.map((item) => (
-              <div key={item.label} className="flex items-start gap-3">
-                <item.icon
-                  size={16}
-                  className="text-[var(--color-accent)] mt-0.5 flex-shrink-0"
-                />
-                <div>
-                  <span className="text-xs font-body text-[var(--color-white)]/40 uppercase tracking-wider block">
-                    {item.label}
+          <div className="max-w-3xl mx-auto">
+            <SectionLabel label="Overview" />
+            <p className="text-xl md:text-2xl font-body font-light text-[var(--color-navy)] leading-relaxed mb-16">
+              {project.overview}
+            </p>
+
+            <SectionLabel label="Lighting Concept" />
+            <p className="text-lg font-body text-[var(--color-navy)]/80 leading-relaxed mb-16">
+              {project.designConcept}
+            </p>
+
+            <SectionLabel label="Project Credits" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+              {project.credits.map((credit, i) => (
+                <div key={credit.role}>
+                  <span className="text-xs font-body text-[var(--color-navy)]/50 uppercase tracking-wider block mb-1">
+                    {credit.role}
                   </span>
-                  <span className="text-sm font-body text-[var(--color-white)]">
-                    {item.value}
+                  <span className="text-base font-display text-[var(--color-navy)]">
+                    {credit.name}
                   </span>
                 </div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Overview */}
-      <section className="bg-section-paper section-padding">
-        <div className="container-st">
-          <div className="max-w-3xl">
-            <SectionLabel label="Overview" />
-            <motion.p
-              className="text-xl md:text-2xl font-body font-light text-[var(--color-navy)] leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              {project.overview}
-            </motion.p>
-          </div>
-        </div>
-      </section>
-
-      {/* Design Concept */}
-      <section className="bg-section-burgundy section-padding">
-        <div className="container-st">
-          <div className="max-w-3xl">
-            <SectionLabel label="Lighting Concept" light />
-            <motion.p
-              className="text-lg font-body text-[var(--color-white)]/80 leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              {project.designConcept}
-            </motion.p>
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery */}
-      <section className="bg-section-paper section-padding">
-        <div className="container-st">
-          <SectionLabel label="Gallery" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-            {project.gallery.map((img, i) => (
-              <motion.button
-                key={i}
-                className="relative aspect-[16/10] rounded-[var(--radius-media)] overflow-hidden cursor-pointer group"
-                onClick={() => {
-                  setLightboxIndex(i);
-                  setLightboxOpen(true);
-                }}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
-                aria-label={`View ${project.name} image ${i + 1} in gallery`}
-              >
-                <Image
-                  src={img}
-                  alt={`${project.name} — gallery image ${i + 1}`}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Credits */}
-      <section className="bg-section-navy section-padding">
-        <div className="container-st">
-          <SectionLabel label="Project Credits" light />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-            {project.credits.map((credit, i) => (
-              <motion.div
-                key={credit.role}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-              >
-                <span className="text-xs font-body text-[var(--color-accent)] uppercase tracking-wider block mb-1">
-                  {credit.role}
-                </span>
-                <span className="text-base font-display text-[var(--color-white)]">
-                  {credit.name}
-                </span>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Related Projects */}
       {relatedProjects.length > 0 && (
-        <section className="bg-section-paper section-padding">
+        <section className="bg-white section-padding border-t border-black/5">
           <div className="container-st">
             <SectionLabel label="Related Projects" />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
@@ -235,23 +196,23 @@ export default function ProjectDetailPage() {
       )}
 
       {/* Prev / Next Navigation */}
-      <div className="bg-section-navy">
+      <div className="bg-[#12121A]">
         <div className="container-st">
-          <div className="flex items-stretch border-t border-white/10">
+          <div className="flex items-stretch">
             {prevProject ? (
               <Link
                 href={`/projects/${prevProject.slug}`}
-                className="flex-1 flex items-center gap-3 py-6 text-[var(--color-white)]/60 hover:text-[var(--color-accent)] transition-colors group"
+                className="flex-1 flex items-center gap-3 py-8 text-[var(--color-white)]/60 hover:text-[var(--color-accent)] transition-colors group"
               >
                 <ChevronLeft
                   size={18}
                   className="transition-transform group-hover:-translate-x-1"
                 />
                 <div>
-                  <span className="text-xs uppercase tracking-wider block text-[var(--color-white)]/30">
-                    Previous
+                  <span className="text-[10px] uppercase tracking-widest block text-[var(--color-white)]/30 mb-1">
+                    Previous Project
                   </span>
-                  <span className="text-sm font-display">
+                  <span className="text-sm font-display tracking-widest uppercase">
                     {prevProject.name}
                   </span>
                 </div>
@@ -263,13 +224,13 @@ export default function ProjectDetailPage() {
             {nextProject && (
               <Link
                 href={`/projects/${nextProject.slug}`}
-                className="flex-1 flex items-center justify-end gap-3 py-6 text-[var(--color-white)]/60 hover:text-[var(--color-accent)] transition-colors group text-right"
+                className="flex-1 flex items-center justify-end gap-3 py-8 text-[var(--color-white)]/60 hover:text-[var(--color-accent)] transition-colors group text-right border-l border-white/10 pl-4"
               >
                 <div>
-                  <span className="text-xs uppercase tracking-wider block text-[var(--color-white)]/30">
-                    Next
+                  <span className="text-[10px] uppercase tracking-widest block text-[var(--color-white)]/30 mb-1">
+                    Next Project
                   </span>
-                  <span className="text-sm font-display">
+                  <span className="text-sm font-display tracking-widest uppercase">
                     {nextProject.name}
                   </span>
                 </div>
@@ -283,14 +244,12 @@ export default function ProjectDetailPage() {
         </div>
       </div>
 
-      {/* Lightbox */}
       <Lightbox
-        images={project.gallery}
-        initialIndex={lightboxIndex}
+        images={allImages}
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
-        alt={project.name}
+        initialIndex={lightboxIndex}
       />
-    </>
+    </div>
   );
 }

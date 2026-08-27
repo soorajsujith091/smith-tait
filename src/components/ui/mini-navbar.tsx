@@ -63,21 +63,9 @@ export function MiniNavbar() {
       href: "/about",
       dropdown: [
         { label: "About Smith Tait", href: "/about" },
-        { label: "Philosophy", href: "/about#philosophy" },
+        { label: "Expertise", href: "/expertise" },
         { label: "Legacy", href: "/legacy" },
         { label: "Our Team", href: "/team" },
-      ],
-    },
-    {
-      label: "Expertise",
-      href: "/expertise",
-      dropdown: [
-        { label: "Hospitality", href: "/expertise#hospitality" },
-        { label: "Residential", href: "/expertise#residential" },
-        { label: "Facade Lighting", href: "/expertise#facade" },
-        { label: "Landscape Lighting", href: "/expertise#landscape" },
-        { label: "Public Realm", href: "/expertise#public-realm" },
-        { label: "Mixed-Use / Commercial", href: "/expertise#mixed-use" },
       ],
     },
     { label: "Projects", href: "/projects" },

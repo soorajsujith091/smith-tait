@@ -41,25 +41,25 @@ export function Footer() {
             <Link href="/" className="inline-block mb-8">
               <Image src="/images/general/logo.png" alt="Smith Tait Logo" width={160} height={50} className="object-contain" />
             </Link>
-            <p className="text-base font-body text-[var(--color-white)]/60 mb-8 leading-relaxed max-w-xs">
+            <p className="text-base font-body font-medium text-[var(--color-white)]/90 mb-8 leading-relaxed max-w-xs">
               Premium Architectural Lighting Design Studio creating transformative spaces across the MENA region.
             </p>
             <div className="space-y-4">
               <a
                 href="mailto:info@smithtait.com"
-                className="flex items-center gap-4 text-sm font-body text-[var(--color-white)]/70 hover:text-[var(--color-accent)] transition-colors"
+                className="flex items-center gap-4 text-sm font-body font-medium text-[var(--color-white)]/90 hover:text-[var(--color-accent)] transition-colors"
               >
                 <Mail size={16} />
                 info@smithtait.com
               </a>
               <a
                 href="tel:+97145850000"
-                className="flex items-center gap-4 text-sm font-body text-[var(--color-white)]/70 hover:text-[var(--color-accent)] transition-colors"
+                className="flex items-center gap-4 text-sm font-body font-medium text-[var(--color-white)]/90 hover:text-[var(--color-accent)] transition-colors"
               >
                 <Phone size={16} />
                 +971 4 585 0000
               </a>
-              <div className="flex items-start gap-4 text-sm font-body text-[var(--color-white)]/70">
+              <div className="flex items-start gap-4 text-sm font-body font-medium text-[var(--color-white)]/90">
                 <MapPin size={16} className="mt-1 flex-shrink-0" />
                 <span className="leading-relaxed">
                   Dubai Design District<br />
@@ -80,7 +80,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-base font-body text-[var(--color-white)]/70 hover:text-[var(--color-accent)] transition-colors duration-300"
+                    className="text-base font-body font-medium text-[var(--color-white)]/90 hover:text-[var(--color-accent)] transition-colors duration-300"
                   >
                     {link.label}
                   </Link>
@@ -99,7 +99,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-base font-body text-[var(--color-white)]/70 hover:text-[var(--color-accent)] transition-colors duration-300"
+                    className="text-base font-body font-medium text-[var(--color-white)]/90 hover:text-[var(--color-accent)] transition-colors duration-300"
                   >
                     {link.label}
                   </Link>
@@ -118,7 +118,7 @@ export function Footer() {
                 href="https://www.linkedin.com/company/smith-tait/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-[var(--color-white)]/70 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 transition-all duration-300"
+                className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-[var(--color-white)]/90 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 transition-all duration-300"
                 aria-label="LinkedIn"
               >
                 <LinkedInIcon size={20} />
@@ -127,7 +127,7 @@ export function Footer() {
                 href="https://www.instagram.com/smith_tait_uae/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-[var(--color-white)]/70 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 transition-all duration-300"
+                className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-[var(--color-white)]/90 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 transition-all duration-300"
                 aria-label="Instagram"
               >
                 <InstagramIcon size={20} />
@@ -141,14 +141,14 @@ export function Footer() {
 
         {/* The Large Name Background Effect */}
         <div className="w-full flex items-center justify-center mt-auto mb-6 overflow-hidden">
-          <h1 className="text-center text-[22vw] sm:text-[18vw] lg:text-[15vw] font-display font-bold bg-clip-text text-transparent bg-gradient-to-b from-white/10 to-white/0 select-none tracking-tighter leading-none whitespace-nowrap">
+          <h1 className="text-center text-[22vw] sm:text-[18vw] lg:text-[15vw] font-display font-bold bg-clip-text text-transparent bg-gradient-to-b from-white/20 to-white/5 select-none tracking-tighter leading-none whitespace-nowrap">
             SMITH TAIT
           </h1>
         </div>
 
         {/* Bottom bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-sm font-body text-[var(--color-white)]/40">
+          <p className="text-sm font-body font-medium text-[var(--color-white)]/60">
             Copyright {new Date().getFullYear()} © Smith Tait | Made with ❤️ Creatox Designs
           </p>
           <div className="flex items-center gap-8">
@@ -156,7 +156,7 @@ export function Footer() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-sm font-body text-[var(--color-white)]/40 hover:text-[var(--color-accent)] transition-colors"
+                className="text-sm font-body font-medium text-[var(--color-white)]/60 hover:text-[var(--color-accent)] transition-colors"
               >
                 {link.label}
               </Link>
@@ -164,7 +164,7 @@ export function Footer() {
           </div>
           <button
             onClick={scrollToTop}
-            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-[var(--color-white)]/40 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 transition-all duration-300"
+            className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-[var(--color-white)]/70 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/50 transition-all duration-300"
             aria-label="Scroll to top"
           >
             <ArrowUp size={20} />

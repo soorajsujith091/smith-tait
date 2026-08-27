@@ -25,32 +25,43 @@ const heroImages = [
   "/images/projects/residential-01.jpg",
 ];
 
-const areasFocused = [
+const expertiseAreas = [
   {
-    category: "Specialist Areas",
-    items: [
-      { title: "Interiors", image: "/images/projects/hotel-lobby-01.jpg", href: "/expertise#interiors" },
-      { title: "Facades", image: "/images/projects/facade-01.jpg", href: "/expertise#facades" },
-      { title: "Landscape", image: "/images/projects/landscape-01.jpg", href: "/expertise#landscape" },
-      { title: "Master Planning", image: "/images/projects/public-realm-01.jpg", href: "/expertise#master-planning" }
-    ]
+    title: "Hospitality",
+    description: "Hotels, resorts & fine dining",
+    href: "/expertise#hospitality",
+    image: "/images/projects/hotel-lobby-01.jpg",
   },
   {
-    category: "Project Types",
-    items: [
-      { title: "Residential", image: "/images/projects/residential-01.jpg", href: "/expertise#residential" },
-      { title: "Hospitality", image: "/images/projects/hotel-lobby-01.jpg", href: "/expertise#hospitality" },
-      { title: "Public Realm", image: "/images/projects/public-realm-01.jpg", href: "/expertise#public-realm" },
-      { title: "Large-Scale Mixed-Use", image: "/images/projects/facade-02.jpg", href: "/expertise#mixed-use" }
-    ]
+    title: "Residential",
+    description: "Luxury villas & residential towers",
+    href: "/expertise#residential",
+    image: "/images/projects/residential-01.jpg",
   },
   {
-    category: "Design Services",
-    items: [
-      { title: "Supervision", image: "/images/projects/facade-01.jpg", href: "/expertise#supervision" },
-      { title: "Value Engineering", image: "/images/projects/landscape-01.jpg", href: "/expertise#value-engineering" }
-    ]
-  }
+    title: "Facade",
+    description: "Building envelope illumination",
+    href: "/expertise#facade",
+    image: "/images/projects/facade-01.jpg",
+  },
+  {
+    title: "Landscape",
+    description: "Parks, gardens & outdoor spaces",
+    href: "/expertise#landscape",
+    image: "/images/projects/landscape-01.jpg",
+  },
+  {
+    title: "Public Realm",
+    description: "Plazas, promenades & civic spaces",
+    href: "/expertise#public-realm",
+    image: "/images/projects/public-realm-01.jpg",
+  },
+  {
+    title: "Mixed-Use",
+    description: "Integrated commercial developments",
+    href: "/expertise#mixed-use",
+    image: "/images/projects/facade-02.jpg",
+  },
 ];
 
 export default function HomePage() {
@@ -71,144 +82,148 @@ export default function HomePage() {
   return (
     <>
       {/* ===== HERO ===== */}
-      <PrismaHero />
+      <section className="relative w-full h-[100svh] overflow-hidden bg-black">
+        <video
+          autoPlay
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/images/general/Create_a_modern_premium_logo (2).mp4"
+        />
+      </section>
 
-
-      {/* ===== FEATURED PROJECTS ===== */}
-      <section className="bg-section-paper section-padding relative z-10">
+      {/* ===== ABOUT PREVIEW ===== */}
+      <section className="bg-section-paper section-padding pt-0">
         <div className="container-st">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
-            
-            {/* Sticky Header Column */}
-            <div className="lg:col-span-4 lg:sticky lg:top-32 lg:pr-8 z-10">
-              <SectionLabel label="Featured Projects" />
-              <AnimatedHeading as="h2" className="mt-4 text-4xl lg:text-5xl tracking-tight text-[var(--color-navy)]">
-                Selected Work
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div>
+              <SectionLabel label="About the Studio" />
+              <AnimatedHeading as="h2">
+                Where Heritage Meets Innovation
               </AnimatedHeading>
-              
-              <div className="mt-8 mb-8 lg:mb-0">
-                <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
-              </div>
-              
-              <div className="hidden lg:block mt-12">
+              <motion.p
+                className="text-body text-[var(--color-grey)] mt-6 leading-relaxed max-w-lg"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              >
+                Founded on the modernist principles of Thomas Smith Tait in 1933,
+                Smith Tait has evolved into a leading architectural lighting design
+                studio. From our base in Dubai, we shape the nocturnal identity of
+                hospitality, residential, and public realm projects across the
+                MENA region and beyond.
+              </motion.p>
+              <motion.div
+                className="mt-8"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              >
                 <Link
-                  href="/projects"
-                  className="inline-flex items-center gap-2 text-sm font-display tracking-wide uppercase text-[var(--color-accent)] hover:text-[var(--color-navy)] transition-colors group"
+                  href="/about"
+                  className="inline-flex items-center gap-2 text-sm font-display font-medium tracking-wide uppercase text-[var(--color-navy)] hover:text-[var(--color-accent)] transition-colors group"
                 >
-                  View All Projects
+                  Learn Our Story
                   <ArrowRight
-                    size={14}
+                    size={16}
                     className="transition-transform group-hover:translate-x-1"
                   />
                 </Link>
-              </div>
+              </motion.div>
             </div>
-
-            {/* Scrolling Content Column */}
-            <div className="lg:col-span-8">
-              <div className="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 lg:gap-6">
-                {filteredProjects.map((project, i) => {
-                  // Cycle through rich architectural colors
-                  const colors = ["220 30% 20%", "350 30% 25%", "45 40% 25%", "210 20% 30%"];
-                  const themeColor = colors[i % colors.length];
-                  
-                  return (
-                    <DestinationCard 
-                      key={project.slug} 
-                      imageUrl={project.heroImage || project.gallery?.[0] || ""} 
-                      location={project.name}
-                      flag=""
-                      stats={`${project.category} • ${project.location}`}
-                      href={`/projects/${project.slug}`}
-                      themeColor={themeColor}
-                    />
-                  );
-                })}
-              </div>
-              <div className="mt-12 text-center lg:hidden">
-                <Link href="/projects" className="btn-primary">
-                  View All Projects
-                  <ArrowRight size={14} className="ml-2 inline" />
-                </Link>
-              </div>
-            </div>
-            
+            <motion.div
+              className="relative aspect-[4/5] md:aspect-square w-full lg:w-[115%] lg:-mr-[15%] rounded-none overflow-hidden shadow-xl"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Image
+                src="/images/general/about-01.jpg"
+                alt="Smith Tait studio — architectural lighting design team at work"
+                fill
+                className="object-cover img-cinematic"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ===== AREAS FOCUSED ===== */}
-      <section className="bg-section-paper section-padding relative">
+      {/* ===== FEATURED PROJECTS ===== */}
+      <section className="bg-section-navy section-padding">
         <div className="container-st">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
-            
-            {/* Sticky Header Column */}
-            <div className="lg:col-span-4 lg:sticky lg:top-32 lg:pr-8 z-10">
-              <SectionLabel label="Our Focus" />
-              <AnimatedHeading as="h2" className="mt-4 text-4xl lg:text-5xl tracking-tight">
-                Areas Focused
-              </AnimatedHeading>
-              <motion.div 
-                className="w-12 h-1 bg-[var(--color-accent)] mt-8"
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                style={{ transformOrigin: "left" }}
+          <SectionLabel label="Featured Projects" light />
+          <div className="flex items-end justify-between mb-8">
+            <AnimatedHeading as="h2" className="text-[var(--color-white)]">
+              Selected Work
+            </AnimatedHeading>
+            <Link
+              href="/projects"
+              className="desktop-only inline-flex items-center gap-2 text-sm font-display tracking-wide uppercase text-[var(--color-accent)] hover:text-[var(--color-white)] transition-colors group"
+            >
+              View All
+              <ArrowRight
+                size={14}
+                className="transition-transform group-hover:translate-x-1"
               />
-              <motion.p 
-                className="text-body text-[var(--color-grey)] mt-6 leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
+            </Link>
+          </div>
+
+          <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} light />
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+            {filteredProjects.map((project, i) => {
+              // Cycle through rich architectural colors
+              const colors = ["220 30% 20%", "350 30% 25%", "45 40% 25%", "210 20% 30%"];
+              const themeColor = colors[i % colors.length];
+              
+              return (
+                <DestinationCard 
+                  key={project.slug} 
+                  imageUrl={project.heroImage || project.gallery?.[0] || ""} 
+                  location={project.name}
+                  flag=""
+                  stats={`${project.category} • ${project.location}`}
+                  href={`/projects/${project.slug}`}
+                  themeColor={themeColor}
+                />
+              );
+            })}
+          </div>
+          <div className="mt-8 text-center mobile-only">
+            <Link href="/projects" className="btn-outline">
+              View All Projects
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== EXPERTISE ===== */}
+      <section className="bg-section-paper section-padding">
+        <div className="container-st">
+          <SectionLabel label="Our Expertise" />
+          <AnimatedHeading as="h2">Six Disciplines of Light</AnimatedHeading>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6 mt-12">
+            {expertiseAreas.map((area, i) => (
+              <motion.div
+                key={area.title}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
               >
-                Our expertise spans across specialized design services and diverse project types, ensuring comprehensive architectural lighting solutions.
-              </motion.p>
-            </div>
-
-            {/* Scrolling Content Column */}
-            <div className="lg:col-span-8 flex flex-col gap-16 lg:gap-20 relative z-0">
-              {areasFocused.map((group, groupIdx) => (
-                <div key={group.category} className="flex flex-col md:flex-row gap-6 md:gap-12">
-                  <div className="md:w-16 flex-shrink-0 pt-4 flex items-start justify-start">
-                    <h3 className="text-xs md:text-sm font-display font-medium tracking-widest text-[var(--color-navy)]/60 uppercase [writing-mode:horizontal-tb] md:[writing-mode:vertical-rl] md:rotate-180">
-                      {group.category}
-                    </h3>
-                  </div>
-                  <div className="flex-1 grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6 md:gap-y-8">
-                    {group.items.map((item, i) => (
-                      <motion.div
-                        key={item.title}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.1, duration: 0.5 }}
-                        className="flex flex-col items-center text-center group"
-                      >
-                        <Link href={item.href} className="w-full flex flex-col items-center">
-                          <div className="relative w-full max-w-[110px] md:max-w-[130px] xl:max-w-[150px] aspect-square rounded-full overflow-hidden border border-black/5 shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-transform duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_12px_32px_rgba(0,0,0,0.15)] mb-4 bg-white">
-                            <Image
-                              src={item.image}
-                              alt={item.title}
-                              fill
-                              className="object-cover transition-transform duration-700 group-hover:scale-110"
-                              sizes="(max-width: 768px) 50vw, 25vw"
-                            />
-                            {/* Inner ring overlay */}
-                            <div className="absolute inset-0 rounded-full border-4 md:border-8 border-white/10 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)] z-10 pointer-events-none transition-colors duration-500 group-hover:border-[var(--color-accent)]/80" />
-                          </div>
-                          <h4 className="text-[10px] md:text-xs font-display font-medium text-[var(--color-navy)] uppercase tracking-widest px-1 group-hover:text-[var(--color-accent)] transition-colors leading-relaxed">
-                            {item.title}
-                          </h4>
-                        </Link>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
+                <ProgressiveBlurCard
+                  title={area.title}
+                  description={area.description}
+                  image={area.image}
+                  href={area.href}
+                />
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -232,7 +247,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              Our Background
+              Since 1933
             </motion.p>
             <motion.h2
               className="text-section font-display text-[var(--color-white)] mb-6 max-w-3xl mx-auto"
@@ -241,7 +256,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              The Story of Smith Tait
+              90 Years of Design Legacy
             </motion.h2>
             <motion.div
               initial={{ opacity: 0 }}
@@ -250,7 +265,7 @@ export default function HomePage() {
               transition={{ delay: 0.5 }}
             >
               <Link href="/legacy" className="btn-primary">
-                Read Our Story
+                Explore Our Heritage
                 <ArrowRight size={16} />
               </Link>
             </motion.div>
@@ -258,15 +273,21 @@ export default function HomePage() {
         </div>
       </section>
 
-
+      {/* ===== VISION STATEMENT ===== */}
+      <VisionSection />
 
       {/* ===== ACHIEVEMENTS & CLIENTS ===== */}
       <section className="bg-[#3f1b21] section-padding">
         <div className="container-st">
-          <SectionLabel label="Selected Clients" light />
-          <div className="mt-12">
-            <LogoMarquee clients={clients} />
+          <SectionLabel label="Impact" light />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16">
+            <StatBlock value={90} suffix="+" label="Years of Design" light />
+            <StatBlock value={250} suffix="+" label="Projects Delivered" light />
+            <StatBlock value={15} label="Countries" light />
+            <StatBlock value={12} label="Industry Awards" light />
           </div>
+          <div className="divider mb-8" />
+          <LogoMarquee clients={clients} />
         </div>
       </section>
 

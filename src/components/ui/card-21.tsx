@@ -20,7 +20,7 @@ const DestinationCard = React.forwardRef<HTMLDivElement, DestinationCardProps>(
           // @ts-ignore - CSS custom properties are valid
           "--theme-color": themeColor,
         } as React.CSSProperties}
-        className={cn("group w-full h-[280px] sm:h-[450px]", className)}
+        className={cn("group w-full h-[240px] sm:h-[320px] lg:h-[360px]", className)}
         {...props}
       >
         <a
@@ -37,7 +37,7 @@ const DestinationCard = React.forwardRef<HTMLDivElement, DestinationCardProps>(
           <div
             className="absolute inset-0 bg-cover bg-center 
                        transition-transform duration-500 ease-in-out group-hover:scale-110"
-            style={{ backgroundImage: `url(${imageUrl})` }}
+            style={{ backgroundImage: `url('${imageUrl}')` }}
           />
 
           {/* Themed Gradient Overlay */}

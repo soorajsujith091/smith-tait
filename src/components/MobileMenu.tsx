@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import { LinkedInIcon, InstagramIcon } from "./ui/SocialIcons";
 
 type NavLink = {
@@ -52,6 +52,13 @@ export function MobileMenu({ links, onClose }: MobileMenuProps) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
     >
+      <button
+        onClick={onClose}
+        className="absolute top-6 right-4 p-2 text-[var(--color-white)] z-50 hover:text-[var(--color-accent)] transition-colors"
+        aria-label="Close menu"
+      >
+        <X size={28} />
+      </button>
       <div className="flex flex-col h-full pt-24 pb-8 px-6 overflow-y-auto">
         <motion.nav
           className="flex-1"
@@ -129,6 +136,13 @@ export function MobileMenu({ links, onClose }: MobileMenuProps) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
+          <Link
+            href="/contact"
+            onClick={onClose}
+            className="block w-full py-3 mb-8 text-center border border-white/20 bg-white/5 text-[var(--color-white)] rounded-full hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors duration-300 font-display uppercase tracking-widest text-sm"
+          >
+            Get in Touch
+          </Link>
           <div className="flex items-center gap-6 mb-6">
             <a
               href="https://www.linkedin.com/company/smith-tait/"

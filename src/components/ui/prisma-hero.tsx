@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -51,36 +51,54 @@ const navItems = [
   { label: "Contact", href: "/contact" }
 ];
 
-const heroImages = [
-  "/images/general/texture-perspective-transport-motion-roadside-travel.jpg",
-  "/images/general/aerial-view-streets-office-building-business-district.jpg",
-  "/images/general/vertical-distant-shot-singapore-marina-bay-sands-nighttime-singapore.jpg",
-  "/images/general/view-light-lamp-with-futuristic-design.jpg",
+const heroMedia = [
+  { type: "video", src: "/images/general/Create_a_modern_premium_logo (2).mp4" },
+  { type: "image", src: "/images/general/texture-perspective-transport-motion-roadside-travel.jpg" },
+  { type: "image", src: "/images/general/aerial-view-streets-office-building-business-district.jpg" },
+  { type: "image", src: "/images/general/vertical-distant-shot-singapore-marina-bay-sands-nighttime-singapore.jpg" },
+  { type: "image", src: "/images/general/view-light-lamp-with-futuristic-design.jpg" },
 ];
 
 export const PrismaHero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
+    if (isVideoPlaying) return;
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % heroImages.length);
+      setCurrentIndex((prev) => {
+        const next = (prev + 1) % heroMedia.length;
+        return next === 0 ? 1 : next;
+      });
     }, 12000); // very slow slider (12 seconds)
     return () => clearInterval(timer);
-  }, []);
+  }, [isVideoPlaying]);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("heroVideoState", { detail: { isPlaying: isVideoPlaying } }));
+  }, [isVideoPlaying]);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % heroImages.length);
+    setCurrentIndex((prev) => {
+      const next = (prev + 1) % heroMedia.length;
+      return next === 0 ? 1 : next;
+    });
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+    setCurrentIndex((prev) => {
+      let next = (prev - 1 + heroMedia.length) % heroMedia.length;
+      if (next === 0) next = heroMedia.length - 1;
+      return next;
+    });
   };
 
   return (
     <section className="h-screen w-full p-2 sm:p-4">
       <div className="relative h-full w-full overflow-hidden rounded-2xl md:rounded-[2rem] group">
         
-        {/* Background image slider */}
+        {/* Background media slider */}
         <AnimatePresence initial={false}>
           <motion.div
             key={currentIndex}
@@ -90,13 +108,37 @@ export const PrismaHero = () => {
             transition={{ duration: 3.0, ease: "easeInOut" }}
             className="absolute inset-0"
           >
-            <Image
-              src={heroImages[currentIndex]}
-              alt={`Hero background ${currentIndex + 1}`}
-              fill
-              priority
-              className="object-cover"
-            />
+            {heroMedia[currentIndex].type === "video" ? (
+              <>
+                <video
+                  src={heroMedia[currentIndex].src}
+                  autoPlay
+                  muted={isMuted}
+                  playsInline
+                  onPlay={() => setIsVideoPlaying(true)}
+                  onEnded={() => {
+                    setIsVideoPlaying(false);
+                    setCurrentIndex((prev) => (prev + 1) % heroMedia.length);
+                  }}
+                  className="object-cover w-full h-full"
+                />
+                <button
+                  onClick={() => setIsMuted(!isMuted)}
+                  className="absolute bottom-6 right-6 md:bottom-10 md:right-10 z-20 p-3 rounded-full bg-black/40 text-white hover:bg-black/60 transition backdrop-blur-sm"
+                  aria-label="Toggle mute"
+                >
+                  {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
+                </button>
+              </>
+            ) : (
+              <Image
+                src={heroMedia[currentIndex].src}
+                alt={`Hero background ${currentIndex + 1}`}
+                fill
+                priority
+                className="object-cover"
+              />
+            )}
           </motion.div>
         </AnimatePresence>
 
@@ -127,51 +169,59 @@ export const PrismaHero = () => {
         </div>
 
         {/* Hero content */}
-        <div className="absolute bottom-0 left-0 right-0 px-4 pb-6 sm:px-6 md:px-10 md:pb-10">
-          <div className="grid grid-cols-12 items-end gap-6">
-            
-            <div className="col-span-12 lg:col-span-8">
-              <p className="text-[var(--color-accent)] font-display text-sm md:text-base uppercase tracking-widest mb-4">
-                Since 1933
-              </p>
-              <h1
-                className="font-display font-medium leading-[1] tracking-[0.05em] uppercase text-[15vw] sm:text-[14vw] md:text-[12vw] lg:text-[10vw] xl:text-[9vw] text-[var(--color-white)]"
-              >
-                <WordsPullUp text="SMITH TAIT" />
-              </h1>
-            </div>
+        <AnimatePresence>
+          {!isVideoPlaying && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="absolute bottom-0 left-0 right-0 px-4 pb-6 sm:px-6 md:px-10 md:pb-10 z-20"
+            >
+              <div className="grid grid-cols-12 items-end gap-6">
+                
+                <div className="col-span-12 lg:col-span-8">
+                  {/* Removed 'Since 1933' subtitle */}
+                  <h1
+                    className="font-display font-medium leading-[1] tracking-[0.05em] uppercase text-[15vw] sm:text-[14vw] md:text-[12vw] lg:text-[10vw] xl:text-[9vw] text-[var(--color-white)]"
+                  >
+                    <WordsPullUp text="SMITH TAIT" />
+                  </h1>
+                </div>
 
-            <div className="col-span-12 flex flex-col gap-6 pb-2 lg:col-span-4 lg:pb-4">
-              
-              <motion.p
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="text-sm text-[var(--color-white)]/80 sm:text-base md:text-lg font-body font-light"
-                style={{ lineHeight: 1.4 }}
-              >
-                We create lighting environments that reveal architecture, enrich experience, and transform the way people inhabit space across the MENA region and beyond.
-              </motion.p>
+                <div className="col-span-12 flex flex-col gap-6 pb-2 lg:col-span-4 lg:pb-4">
+                  
+                  <motion.p
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="text-sm text-[var(--color-white)]/80 sm:text-base md:text-lg font-body font-light"
+                    style={{ lineHeight: 1.4 }}
+                  >
+                    We create lighting environments that reveal architecture, enrich experience, and transform the way people inhabit space across the MENA region and beyond.
+                  </motion.p>
 
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <Link
-                  href="/projects"
-                  className="group inline-flex items-center gap-3 rounded-full bg-[var(--color-accent)] py-1.5 pl-6 pr-1.5 text-sm font-display font-medium text-[var(--color-ink-dark)] transition-all hover:gap-4 sm:text-base uppercase tracking-wider"
-                >
-                  View Our Work
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-ink-dark)] transition-transform group-hover:scale-105 sm:h-12 sm:w-12">
-                    <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--color-accent)]" />
-                  </span>
-                </Link>
-              </motion.div>
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Link
+                      href="/projects"
+                      className="group inline-flex items-center gap-3 rounded-full bg-[var(--color-accent)] py-1.5 pl-6 pr-1.5 text-sm font-display font-medium text-[var(--color-ink-dark)] transition-all hover:gap-4 sm:text-base uppercase tracking-wider"
+                    >
+                      View Our Work
+                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-ink-dark)] transition-transform group-hover:scale-105 sm:h-12 sm:w-12">
+                        <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--color-accent)]" />
+                      </span>
+                    </Link>
+                  </motion.div>
 
-            </div>
-          </div>
-        </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

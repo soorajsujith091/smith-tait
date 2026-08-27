@@ -8,35 +8,30 @@ import { Menu, X } from "lucide-react";
 import { LinkedInIcon, InstagramIcon } from "./ui/SocialIcons";
 import { MobileMenu } from "./MobileMenu";
 import { MiniNavbar } from "./ui/mini-navbar";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { label: "Home", href: "/" },
+  {
+    label: "Home",
+    href: "/",
+    dropdown: [
+      { label: "Home (New)", href: "/" },
+      { label: "Home (Original)", href: "/home-original" },
+    ],
+  },
   {
     label: "About",
     href: "/about",
     dropdown: [
       { label: "About Smith Tait", href: "/about" },
-      { label: "Philosophy", href: "/about#philosophy" },
+      { label: "Expertise", href: "/expertise" },
       { label: "Legacy", href: "/legacy" },
       { label: "Our Team", href: "/team" },
-    ],
-  },
-  {
-    label: "Expertise",
-    href: "/expertise",
-    dropdown: [
-      { label: "Hospitality", href: "/expertise#hospitality" },
-      { label: "Residential", href: "/expertise#residential" },
-      { label: "Facade Lighting", href: "/expertise#facade" },
-      { label: "Landscape Lighting", href: "/expertise#landscape" },
-      { label: "Public Realm", href: "/expertise#public-realm" },
-      { label: "Mixed-Use / Commercial", href: "/expertise#mixed-use" },
     ],
   },
   { label: "Projects", href: "/projects" },
   { label: "Clients", href: "/clients" },
   { label: "News", href: "/news" },
-  { label: "Contact", href: "/contact" },
 ];
 
 export function Header() {
@@ -44,6 +39,19 @@ export function Header() {
   const [showMiniNav, setShowMiniNav] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [hideHeaderForVideo, setHideHeaderForVideo] = useState(false);
+  const pathname = usePathname();
+  const isProjectPage = pathname?.startsWith("/projects/") && pathname !== "/projects";
+
+  useEffect(() => {
+    const handleVideoState = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setHideHeaderForVideo(customEvent.detail.isPlaying);
+    };
+
+    window.addEventListener("heroVideoState", handleVideoState);
+    return () => window.removeEventListener("heroVideoState", handleVideoState);
+  }, []);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -83,19 +91,19 @@ export function Header() {
     <>
       <motion.header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "-translate-y-full opacity-0 pointer-events-none" : "translate-y-0 opacity-100"
+          scrolled || hideHeaderForVideo ? "-translate-y-full opacity-0 pointer-events-none" : "translate-y-0 opacity-100"
         }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="bg-transparent">
+        <div className={isProjectPage ? "bg-[#12121A]" : "bg-transparent"}>
           <div className="container-st">
             <div className="flex items-center justify-between h-20 lg:h-24">
               {/* Logo */}
               <Link
                 href="/"
-                className="relative z-10 flex items-center gap-3 group"
+                className="relative z-10 flex items-center gap-3 group mt-3"
                 aria-label="Smith Tait — Home"
               >
                 <Image src="/images/general/logo.png" alt="Smith Tait Logo" width={140} height={40} className="object-contain" priority />
@@ -103,7 +111,7 @@ export function Header() {
 
               {/* Desktop Navigation */}
               <nav
-                className="desktop-only flex items-center gap-1"
+                className="desktop-only flex items-center gap-2 mt-2"
                 aria-label="Primary navigation"
               >
                 {navLinks.map((link) => (
@@ -117,7 +125,7 @@ export function Header() {
                   >
                     <Link
                       href={link.href}
-                      className="px-3 py-2 text-sm font-body font-light tracking-[0.04em] uppercase text-[var(--color-white)]/80 hover:text-[var(--color-accent)] transition-colors duration-300 relative group"
+                      className="px-3 py-2 text-base font-body font-normal tracking-[0.04em] uppercase text-[var(--color-white)]/90 hover:text-[var(--color-accent)] transition-colors duration-300 relative group"
                     >
                       {link.label}
                       <span className="absolute bottom-0 left-3 right-3 h-[1px] bg-[var(--color-accent)] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
@@ -138,7 +146,7 @@ export function Header() {
                               <Link
                                 key={sub.label}
                                 href={sub.href}
-                                className="block px-5 py-2.5 text-sm font-body text-[var(--color-white)]/70 hover:text-[var(--color-accent)] hover:bg-white/5 transition-all duration-200"
+                                className="block px-5 py-3 text-base font-body text-[var(--color-white)]/90 hover:text-[var(--color-accent)] hover:bg-white/5 transition-all duration-200"
                               >
                                 {sub.label}
                               </Link>
