@@ -187,7 +187,7 @@ export default function HomePage() {
                         className="flex flex-col items-center text-center group"
                       >
                         <Link href={item.href} className="w-full flex flex-col items-center">
-                          <div className="relative w-full max-w-[110px] md:max-w-[130px] xl:max-w-[150px] aspect-square rounded-full overflow-hidden border border-black/5 shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-transform duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_12px_32px_rgba(0,0,0,0.15)] mb-4 bg-white">
+                          <div className="relative w-full max-w-[110px] md:max-w-[130px] xl:max-w-[150px] aspect-square rounded-xl overflow-hidden border border-black/5 shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-transform duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_12px_32px_rgba(0,0,0,0.15)] mb-4 bg-white">
                             <Image
                               src={item.image}
                               alt={item.title}
@@ -196,7 +196,7 @@ export default function HomePage() {
                               sizes="(max-width: 768px) 50vw, 25vw"
                             />
                             {/* Inner ring overlay */}
-                            <div className="absolute inset-0 rounded-full border-4 md:border-8 border-white/10 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)] z-10 pointer-events-none transition-colors duration-500 group-hover:border-[var(--color-accent)]/80" />
+                            <div className="absolute inset-0 rounded-xl border-4 md:border-8 border-white/10 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)] z-10 pointer-events-none transition-colors duration-500 group-hover:border-[var(--color-accent)]/80" />
                           </div>
                           <h4 className="text-[10px] md:text-xs font-display font-medium text-[var(--color-navy)] uppercase tracking-widest px-1 group-hover:text-[var(--color-accent)] transition-colors leading-relaxed">
                             {item.title}

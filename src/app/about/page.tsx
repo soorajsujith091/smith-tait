@@ -6,7 +6,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
-import { StatBlock } from "@/components/ui/StatBlock";
 import { QuoteBlock } from "@/components/ui/QuoteBlock";
 import { TeamCard } from "@/components/ui/TeamCard";
 import { teamMembers } from "@/data/team";
@@ -15,8 +14,16 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-section-navy pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center">
-        <div className="container-st">
+      <section className="relative pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center overflow-hidden">
+        <Image
+          src="/images/general/about-01.jpg"
+          alt="About Smith Tait"
+          fill
+          className="object-cover img-cinematic"
+          priority
+        />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/80" />
+        <div className="container-fluid relative z-10">
           <SectionLabel label="About" light />
           <AnimatedHeading as="h1" className="text-[var(--color-white)] max-w-4xl">
             Defining Space Through Light
@@ -129,18 +136,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Achievements */}
-      <section className="bg-section-dark section-padding">
-        <div className="container-st">
-          <SectionLabel label="Achievements" light />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-            <StatBlock value={90} suffix="+" label="Years of Design" light />
-            <StatBlock value={250} suffix="+" label="Projects Delivered" light />
-            <StatBlock value={15} label="Countries" light />
-            <StatBlock value={12} label="Industry Awards" light />
-          </div>
-        </div>
-      </section>
+
 
       {/* Team Preview */}
       <section className="bg-section-paper section-padding">

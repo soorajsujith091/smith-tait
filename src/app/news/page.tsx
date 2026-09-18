@@ -11,8 +11,16 @@ export default function NewsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-section-navy pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center">
-        <div className="container-st">
+      <section className="relative pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center overflow-hidden">
+        <Image
+          src="/images/general/park-city.jpg"
+          alt="News & Insights"
+          fill
+          className="object-cover img-cinematic"
+          priority
+        />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/80" />
+        <div className="container-fluid relative z-10">
           <SectionLabel label="News & Insights" light />
           <AnimatedHeading as="h1" className="text-[var(--color-white)] max-w-3xl">
             Latest from the Studio

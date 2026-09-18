@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowUp, Mail, Phone, MapPin } from "lucide-react";
 import { LinkedInIcon, InstagramIcon } from "./ui/SocialIcons";
@@ -25,9 +26,15 @@ const footerLinks = {
 };
 
 export function Footer() {
+  const pathname = usePathname();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <footer className="bg-section-navy relative overflow-hidden" role="contentinfo">
@@ -35,7 +42,7 @@ export function Footer() {
       <div className="divider-accent" />
 
       <div className="container-st pt-16 pb-8 lg:pt-20 lg:pb-10 relative z-10 flex flex-col justify-between">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-12 max-w-7xl mx-auto w-full">
           {/* Column 1: Brand & Contact */}
           <div className="lg:col-span-1">
             <Link href="/" className="inline-block mb-8">
@@ -147,7 +154,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 max-w-7xl mx-auto w-full">
           <p className="text-sm font-body font-medium text-[var(--color-white)]/60">
             Copyright {new Date().getFullYear()} © Smith Tait | Made with ❤️ Creatox Designs
           </p>

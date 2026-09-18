@@ -32,7 +32,7 @@
   /* Spacing */
   --section-padding: clamp(64px, 10vw, 160px);
   --container-padding: clamp(20px, 5vw, 80px);
-  --container-max: 1440px;
+  --container-max: 100%;
 
   /* Border radius */
   --radius-media: 24px;
@@ -158,6 +158,12 @@ h1, h2, h3, h4, h5, h6 {
   max-width: var(--container-max);
   margin-left: auto;
   margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+.container-fluid {
+  width: 100%;
   padding-left: var(--container-padding);
   padding-right: var(--container-padding);
 }

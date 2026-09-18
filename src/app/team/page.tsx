@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import { TeamCard } from "@/components/ui/TeamCard";
@@ -10,8 +11,16 @@ export default function TeamPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-section-navy pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center">
-        <div className="container-st">
+      <section className="relative pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center overflow-hidden">
+        <Image
+          src="/images/general/park-city.jpg"
+          alt="Our Team"
+          fill
+          className="object-cover img-cinematic"
+          priority
+        />
+        <div className="absolute inset-0 bg-[var(--color-navy)]/80" />
+        <div className="container-fluid relative z-10">
           <SectionLabel label="Our People" light />
           <AnimatedHeading as="h1" className="text-[var(--color-white)] max-w-3xl">
             The Team Behind the Light

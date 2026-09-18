@@ -22,7 +22,7 @@ export default function LegacyPage() {
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink-dark)]/90 via-[var(--color-ink-dark)]/40 to-transparent" />
-        <div className="relative z-10 container-st pb-12">
+        <div className="relative z-10 container-fluid pb-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}

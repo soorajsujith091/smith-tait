@@ -27,7 +27,7 @@ export function FilterBar({ activeFilter, onFilterChange, light }: FilterBarProp
         <select
           value={activeFilter}
           onChange={(e) => onFilterChange(e.target.value)}
-          className={`w-full p-3 rounded-lg border font-body text-sm ${
+          className={`w-full p-3 rounded-lg border font-body font-bold text-sm ${
             light
               ? "bg-[var(--color-navy)] text-[var(--color-white)] border-white/20 focus:border-[var(--color-accent)]"
               : "bg-white text-[var(--color-navy)] border-[var(--color-grey)]/30 focus:border-[var(--color-accent)]"
@@ -51,7 +51,7 @@ export function FilterBar({ activeFilter, onFilterChange, light }: FilterBarProp
       >
         {categories.map((cat) => {
           const isActive = activeFilter === cat;
-          const baseClasses = "relative px-5 py-2.5 text-sm font-body tracking-wide rounded-[var(--radius-pill)] border transition-all duration-300";
+          const baseClasses = "relative px-5 py-2.5 text-sm font-body font-bold tracking-wide rounded-[var(--radius-pill)] border transition-all duration-300";
           
           let colorClasses = "";
           if (isActive) {

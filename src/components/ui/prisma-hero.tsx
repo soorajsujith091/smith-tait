@@ -52,7 +52,6 @@ const navItems = [
 ];
 
 const heroMedia = [
-  { type: "video", src: "/images/general/Create_a_modern_premium_logo (2).mp4" },
   { type: "image", src: "/images/general/texture-perspective-transport-motion-roadside-travel.jpg" },
   { type: "image", src: "/images/general/aerial-view-streets-office-building-business-district.jpg" },
   { type: "image", src: "/images/general/vertical-distant-shot-singapore-marina-bay-sands-nighttime-singapore.jpg" },
@@ -95,8 +94,8 @@ export const PrismaHero = () => {
   };
 
   return (
-    <section className="h-screen w-full p-2 sm:p-4">
-      <div className="relative h-full w-full overflow-hidden rounded-2xl md:rounded-[2rem] group">
+    <section className="h-screen w-full">
+      <div className="relative h-full w-full overflow-hidden group">
         
         {/* Background media slider */}
         <AnimatePresence initial={false}>
@@ -180,16 +179,7 @@ export const PrismaHero = () => {
             >
               <div className="grid grid-cols-12 items-end gap-6">
                 
-                <div className="col-span-12 lg:col-span-8">
-                  {/* Removed 'Since 1933' subtitle */}
-                  <h1
-                    className="font-display font-medium leading-[1] tracking-[0.05em] uppercase text-[15vw] sm:text-[14vw] md:text-[12vw] lg:text-[10vw] xl:text-[9vw] text-[var(--color-white)]"
-                  >
-                    <WordsPullUp text="SMITH TAIT" />
-                  </h1>
-                </div>
-
-                <div className="col-span-12 flex flex-col gap-6 pb-2 lg:col-span-4 lg:pb-4">
+                <div className="col-span-12 flex flex-col gap-6 pb-2 lg:col-span-4 lg:col-start-9 lg:pb-4">
                   
                   <motion.p
                     initial={{ y: 20, opacity: 0 }}
