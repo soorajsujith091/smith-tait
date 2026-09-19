@@ -52,6 +52,9 @@ const navItems = [
 ];
 
 const heroMedia = [
+  { type: "image", src: "/images/general/5be3e577-43d5-405a-a0dc-235491714475-1-1-768x512_upscayl_2x_upscayl-standard-4x.png" },
+  { type: "image", src: "/images/general/59.jpg" },
+  { type: "image", src: "/images/general/491465886_18499853011022325_2957532526871004549_n.jpg" },
   { type: "image", src: "/images/general/texture-perspective-transport-motion-roadside-travel.jpg" },
   { type: "image", src: "/images/general/aerial-view-streets-office-building-business-district.jpg" },
   { type: "image", src: "/images/general/vertical-distant-shot-singapore-marina-bay-sands-nighttime-singapore.jpg" },
