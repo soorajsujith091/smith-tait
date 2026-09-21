@@ -1,17 +1,48 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { newsArticles } from "@/data/news";
 
 export default function NewsArticlePage() {
   const params = useParams();
   const slug = params.slug as string;
-  const article = newsArticles.find((a) => a.slug === slug);
+  const [article, setArticle] = useState<any | null>(null);
+  const [newsArticles, setNewsArticles] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const res = await fetch(`/api/data/news?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success) {
+          setNewsArticles(data.data);
+          const found = data.data.find((a: any) => a.slug === slug);
+          setArticle(found || null);
+        }
+      } catch (err) {
+        console.error("Failed to load news", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchNews();
+  }, [slug]);
+
+  if (isLoading) {
+    return (
+      <div className="bg-section-paper section-padding pt-32 min-h-screen flex items-center justify-center">
+        <div className="container-st text-center">
+          <h1 className="text-heading font-display">Loading...</h1>
+        </div>
+      </div>
+    );
+  }
 
   if (!article) {
     return (
@@ -27,7 +58,7 @@ export default function NewsArticlePage() {
   }
 
   const relatedArticles = newsArticles
-    .filter((a) => a.slug !== slug)
+    .filter((a: any) => a.slug !== article.slug)
     .slice(0, 2);
 
   return (

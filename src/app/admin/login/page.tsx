@@ -1,11 +1,45 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { AtSign, Lock, Eye, ArrowRight, Fingerprint, Activity, ShieldCheck } from "lucide-react";
+import { AtSign, Lock, Eye, ArrowRight, EyeOff, Loader2 } from "lucide-react";
 
 export default function AdminLogin() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (res.ok) {
+        router.push("/admin/home");
+      } else {
+        const data = await res.json();
+        setError(data.error || "Login failed");
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen relative flex flex-col items-center justify-center overflow-hidden bg-[var(--color-ink-dark)]">
       {/* Background */}
@@ -18,8 +52,6 @@ export default function AdminLogin() {
       />
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-ink-dark)]/80 via-[var(--color-ink-dark)]/60 to-[var(--color-navy)]/90" />
 
-
-
       {/* Login Card */}
       <motion.div 
         className="relative z-10 w-full max-w-md p-8 sm:p-10 bg-[var(--color-navy)]/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl"
@@ -28,19 +60,27 @@ export default function AdminLogin() {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="flex flex-col items-center mb-10">
-          <div className="w-12 h-12 bg-white/5 border border-[var(--color-accent)]/30 rounded-xl flex items-center justify-center mb-4 text-[var(--color-accent)]">
-            <Activity size={24} />
-          </div>
-          <h1 className="text-2xl font-display tracking-widest text-white uppercase mb-2">
-            Smith <span className="text-[var(--color-accent)]">Tait</span>
-          </h1>
+          <Image
+            src="/images/general/ST_Logo_White_RGB.webp"
+            alt="Smith Tait"
+            width={180}
+            height={60}
+            className="mb-4"
+            priority
+          />
           <p className="text-[10px] font-display uppercase tracking-widest text-[var(--color-grey)] text-center max-w-[250px] leading-relaxed">
             Admin CMS Portal
           </p>
         </div>
 
-        <form className="space-y-6">
-          {/* Studio ID */}
+        <form className="space-y-6" onSubmit={handleLogin}>
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/50 text-red-500 text-xs p-3 rounded-lg text-center">
+              {error}
+            </div>
+          )}
+
+          {/* Email */}
           <div className="space-y-2">
             <label className="text-[10px] font-display uppercase tracking-widest text-[var(--color-grey)] flex items-center justify-between">
               Email Address
@@ -51,6 +91,9 @@ export default function AdminLogin() {
               </div>
               <input
                 type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@smithtait.com"
                 className="w-full bg-transparent border-none py-3 px-3 text-sm text-white placeholder-white/20 focus:outline-none"
               />
@@ -67,12 +110,19 @@ export default function AdminLogin() {
                 <Lock size={16} />
               </div>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
                 className="w-full bg-transparent border-none py-3 px-3 text-sm text-white placeholder-white/20 focus:outline-none tracking-widest"
               />
-              <button type="button" className="pr-4 text-[var(--color-grey)] hover:text-white transition-colors">
-                <Eye size={16} />
+              <button 
+                type="button" 
+                onClick={() => setShowPassword(!showPassword)}
+                className="pr-4 text-[var(--color-grey)] hover:text-white transition-colors"
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
           </div>
@@ -89,17 +139,15 @@ export default function AdminLogin() {
             </Link>
           </div>
 
-          <Link href="/admin">
-            <button
-              type="button"
-              className="w-full py-4 mt-2 bg-[var(--color-accent)] text-[var(--color-ink-dark)] font-display text-sm uppercase tracking-widest font-semibold rounded-lg hover:bg-white transition-colors flex items-center justify-center gap-2"
-            >
-              Login
-              <ArrowRight size={16} />
-            </button>
-          </Link>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-4 mt-2 bg-[var(--color-accent)] text-[var(--color-ink-dark)] font-display text-sm uppercase tracking-widest font-semibold rounded-lg hover:bg-white transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            {isLoading ? "Authenticating..." : "Login"}
+            {isLoading ? <Loader2 size={16} className="animate-spin" /> : <ArrowRight size={16} />}
+          </button>
         </form>
-
 
       </motion.div>
 

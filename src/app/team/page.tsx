@@ -1,19 +1,54 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import { TeamCard } from "@/components/ui/TeamCard";
-import { teamMembers } from "@/data/team";
 
 export default function TeamPage() {
+  const [teamMembers, setTeamMembers] = useState<any[]>([]);
+  const [heroImage, setHeroImage] = useState<string>("/images/general/park-city.jpg");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const res = await fetch(`/api/data/team?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success) {
+          setTeamMembers(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to load team", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    const fetchTeamPageData = async () => {
+      try {
+        const res = await fetch(`/api/data/teamPageData?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success && data.data && data.data.heroImage) {
+          setHeroImage(data.data.heroImage);
+        }
+      } catch (err) {
+        console.error("Failed to load team page data", err);
+      }
+    };
+    
+    fetchTeam();
+    fetchTeamPageData();
+  }, []);
+
   return (
     <>
       {/* Hero */}
       <section className="relative pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center overflow-hidden">
         <Image
-          src="/images/general/park-city.jpg"
+          src={heroImage}
           alt="Our Team"
           fill
           className="object-cover img-cinematic"
@@ -41,11 +76,15 @@ export default function TeamPage() {
       <section className="bg-section-paper section-padding">
         <div className="container-st">
           <SectionLabel label="Leadership & Team" />
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
-            {teamMembers.map((member, i) => (
-              <TeamCard key={member.name} member={member} index={i} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="text-center py-20 text-[var(--color-grey)]">Loading Team...</div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+              {teamMembers.map((member, i) => (
+                <TeamCard key={member.name} member={member} index={i} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

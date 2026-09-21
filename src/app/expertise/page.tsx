@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +8,7 @@ import { ArrowRight } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 
-const expertiseAreas = [
+const defaultExpertiseAreas = [
   {
     id: "hospitality",
     title: "Hospitality",
@@ -65,12 +66,42 @@ const expertiseAreas = [
 ];
 
 export default function ExpertisePage() {
+  const [expertiseAreas, setExpertiseAreas] = useState<any[]>(defaultExpertiseAreas);
+  const [heroImage, setHeroImage] = useState<string>("/images/general/texture-perspective-transport-motion-roadside-travel.jpg");
+
+  useEffect(() => {
+    const fetchExpertise = async () => {
+      try {
+        const res = await fetch(`/api/data/expertiseData?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success && data.data) {
+          if (data.data.heroImage) {
+            setHeroImage(data.data.heroImage);
+          }
+          if (data.data.services) {
+            // Merge dynamic data with default images
+            const mergedData = data.data.services.map((service: any, index: number) => ({
+            ...service,
+            id: service.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+            image: service.image || defaultExpertiseAreas[index % defaultExpertiseAreas.length].image,
+            stats: service.stats || defaultExpertiseAreas[index % defaultExpertiseAreas.length].stats,
+          }));
+          setExpertiseAreas(mergedData);
+        }
+        }
+      } catch (err) {
+        console.error("Failed to load expertise data", err);
+      }
+    };
+    fetchExpertise();
+  }, []);
+
   return (
     <>
       {/* Hero */}
       <section className="relative pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center overflow-hidden">
         <Image
-          src="/images/general/texture-perspective-transport-motion-roadside-travel.jpg"
+          src={heroImage}
           alt="Our Expertise"
           fill
           className="object-cover img-cinematic"

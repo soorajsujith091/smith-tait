@@ -51,7 +51,7 @@ const navItems = [
   { label: "Contact", href: "/contact" }
 ];
 
-const heroMedia = [
+const defaultHeroMedia = [
   { type: "image", src: "/images/general/5be3e577-43d5-405a-a0dc-235491714475-1-1-768x512_upscayl_2x_upscayl-standard-4x.png" },
   { type: "image", src: "/images/general/59.jpg" },
   { type: "image", src: "/images/general/491465886_18499853011022325_2957532526871004549_n.jpg" },
@@ -61,9 +61,17 @@ const heroMedia = [
   { type: "image", src: "/images/general/view-light-lamp-with-futuristic-design.jpg" },
 ];
 
-export const PrismaHero = () => {
+interface PrismaHeroProps {
+  heroImages?: string[];
+}
+
+export function PrismaHero({ heroImages }: PrismaHeroProps = {}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
+
+  const heroMedia = heroImages && heroImages.length > 0 
+    ? heroImages.map(src => ({ type: "image", src })) 
+    : defaultHeroMedia;
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {

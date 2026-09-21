@@ -1,20 +1,61 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import { Timeline } from "@/components/ui/Timeline";
 import { QuoteBlock } from "@/components/ui/QuoteBlock";
-import { timelineMilestones } from "@/data/timeline";
 
 export default function LegacyPage() {
+  const [timelineMilestones, setTimelineMilestones] = useState<any[]>([]);
+  const [heroImage, setHeroImage] = useState<string>("/images/general/legacy-01.jpg");
+  const [featureImage, setFeatureImage] = useState<string>("/images/general/legacy-01.jpg");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTimeline = async () => {
+      try {
+        const res = await fetch(`/api/data/timeline?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success) {
+          setTimelineMilestones(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to load timeline", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    const fetchLegacyPageData = async () => {
+      try {
+        const res = await fetch(`/api/data/legacyPageData?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success && data.data) {
+          if (data.data.heroImage) {
+            setHeroImage(data.data.heroImage);
+          }
+          if (data.data.featureImage) {
+            setFeatureImage(data.data.featureImage);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load legacy page data", err);
+      }
+    };
+    
+    fetchTimeline();
+    fetchLegacyPageData();
+  }, []);
+
   return (
     <>
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end">
         <Image
-          src="/images/general/legacy-01.jpg"
+          src={heroImage}
           alt="Thomas Smith Tait modernist architectural legacy"
           fill
           className="object-cover img-cinematic"
@@ -70,14 +111,14 @@ export default function LegacyPage() {
               </p>
             </motion.div>
             <motion.div
-              className="relative aspect-[3/4] rounded-[var(--radius-media)] overflow-hidden"
+              className="relative aspect-[4/5] lg:aspect-square rounded-[var(--radius-media)] overflow-hidden"
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <Image
-                src="/images/general/legacy-01.jpg"
+                src={featureImage}
                 alt="Thomas Smith Tait's architectural works"
                 fill
                 className="object-cover img-cinematic"
@@ -143,7 +184,11 @@ export default function LegacyPage() {
           <AnimatedHeading as="h2" className="text-[var(--color-white)] mb-12">
             Evolution of Design
           </AnimatedHeading>
-          <Timeline milestones={timelineMilestones} />
+          {isLoading ? (
+            <div className="text-center py-10 text-white/50">Loading Timeline...</div>
+          ) : (
+            <Timeline milestones={timelineMilestones} />
+          )}
         </div>
       </section>
     </>

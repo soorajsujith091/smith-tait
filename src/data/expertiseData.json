@@ -1,0 +1,37 @@
+{
+  "services": [
+    {
+      "title": "Hospitality",
+      "subtitle": "Hotels, Resorts & Fine Dining",
+      "description": "We create lighting environments that define the guest experience — from the drama of a grand lobby to the intimacy of a private dining room. Our hospitality work spans five-star hotels, boutique resorts, and destination restaurants across the Gulf region.",
+      "image": "/images/uploads/1789813543575-5be3e577-43d5-405a-a0dc-235491714475-1-1-768x512upscayl2xupscayl-standard-4x.png"
+    },
+    {
+      "title": "Residential",
+      "subtitle": "Luxury Villas & Residential Towers",
+      "description": "Residential lighting must respond to the rhythms of daily life — energising in the morning, calming at night. We design integrated lighting and control systems for ultra-luxury villas, penthouses, and branded residential towers."
+    },
+    {
+      "title": "Facade Lighting",
+      "subtitle": "Building Envelope Illumination",
+      "description": "The facade is a building's public face after dark. Our facade lighting schemes reveal architectural form, create nocturnal identities, and establish visual hierarchy within urban skylines — from subtle wash lighting to programmable media facades."
+    },
+    {
+      "title": "Landscape Lighting",
+      "subtitle": "Parks, Gardens & Outdoor Spaces",
+      "description": "We approach landscape lighting with ecological sensitivity, balancing the need for safety and ambience with dark-sky principles. Our schemes extend the usability of outdoor spaces while preserving natural nocturnal environments."
+    },
+    {
+      "title": "Public Realm",
+      "subtitle": "Plazas, Promenades & Civic Spaces",
+      "description": "Public realm lighting shapes the character of cities after dark. We design lighting masterplans for plazas, waterfronts, pedestrian districts, and civic spaces that are welcoming, safe, and visually cohesive."
+    },
+    {
+      "title": "Mixed-Use / Commercial",
+      "subtitle": "Integrated Development Lighting",
+      "description": "Mixed-use developments demand a unified lighting strategy across multiple programmes — retail, office, residential, and hospitality — creating a coherent nocturnal identity while respecting the unique character of each component.",
+      "image": "/images/uploads/1789813579420-491465886184998530110223252957532526871004549n.jpg"
+    }
+  ],
+  "heroImage": "/images/uploads/1789816147406-491465886184998530110223252957532526871004549n.jpg"
+}

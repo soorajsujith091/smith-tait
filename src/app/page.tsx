@@ -11,9 +11,6 @@ import { DestinationCard } from "@/components/ui/card-21";
 import { StatBlock } from "@/components/ui/StatBlock";
 import { LogoMarquee } from "@/components/ui/LogoMarquee";
 import { ProgressiveBlurCard } from "@/components/ui/progressive-blur-card";
-import { projects } from "@/data/projects";
-import { clients } from "@/data/clients";
-import { newsArticles } from "@/data/news";
 import { PrismaHero } from "@/components/ui/prisma-hero";
 import { VisionSection } from "@/components/ui/VisionSection";
 import { FilterBar } from "@/components/ui/FilterBar";
@@ -25,7 +22,7 @@ const heroImages = [
   "/images/projects/residential-01.jpg",
 ];
 
-const areasFocused = [
+const defaultAreasFocused = [
   {
     category: "Specialist Areas",
     items: [
@@ -56,7 +53,58 @@ const areasFocused = [
 export default function HomePage() {
   const [heroIndex, setHeroIndex] = useState(0);
   const [activeFilter, setActiveFilter] = useState("All");
+  const [featuredTitles, setFeaturedTitles] = useState<string[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [newsArticles, setNewsArticles] = useState<any[]>([]);
+  const [clients, setClients] = useState<any[]>([]);
+  const [areasFocused, setAreasFocused] = useState<any[]>(defaultAreasFocused);
+  const [homeData, setHomeData] = useState<any>(null);
 
+  useEffect(() => {
+    // Fetch dynamic featured projects and all projects from local JSON API
+    const fetchData = async () => {
+      try {
+        const [homeRes, projRes, newsRes, clientsRes, focusDataRes] = await Promise.all([
+          fetch(`/api/home-data?t=${new Date().getTime()}`),
+          fetch(`/api/data/projects?t=${new Date().getTime()}`),
+          fetch(`/api/data/news?t=${new Date().getTime()}`),
+          fetch(`/api/data/clients?t=${new Date().getTime()}`),
+          fetch(`/api/data/focusData?t=${new Date().getTime()}`)
+        ]);
+        
+        const homeDataJson = await homeRes.json();
+        const projData = await projRes.json();
+        const newsData = await newsRes.json();
+        const clientsData = await clientsRes.json();
+        const focusData = await focusDataRes.json();
+        
+        if (homeDataJson) {
+          setHomeData(homeDataJson);
+          if (homeDataJson.featuredProjects) {
+            setFeaturedTitles(homeDataJson.featuredProjects.map((p: any) => p.title));
+          }
+        }
+        if (projData.success) {
+          setProjects(projData.data);
+        }
+        if (newsData.success) {
+          setNewsArticles(newsData.data);
+        }
+        if (clientsData.success) {
+          setClients(clientsData.data);
+        }
+        if (focusData.success && focusData.data.areasFocused) {
+          setAreasFocused(focusData.data.areasFocused);
+        }
+      } catch (err) {
+        console.error("Failed to load data", err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // When "All" is selected, show all projects (capped at 8 for the homepage).
+  // When a specific category is selected, show ALL projects in that category (capped at 8).
   const filteredProjects = activeFilter === "All" 
     ? projects.slice(0, 8) 
     : projects.filter(p => p.category === activeFilter).slice(0, 8);
@@ -71,7 +119,7 @@ export default function HomePage() {
   return (
     <>
       {/* ===== HERO ===== */}
-      <PrismaHero />
+      <PrismaHero heroImages={homeData?.heroImages} />
 
 
       {/* ===== FEATURED PROJECTS ===== */}
@@ -177,7 +225,7 @@ export default function HomePage() {
                     </h3>
                   </div>
                   <div className="flex-1 grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6 md:gap-y-8">
-                    {group.items.map((item, i) => (
+                    {group.items.map((item: any, i: number) => (
                       <motion.div
                         key={item.title}
                         initial={{ opacity: 0, y: 20 }}

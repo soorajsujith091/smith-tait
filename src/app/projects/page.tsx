@@ -1,28 +1,61 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { FilterBar } from "@/components/ui/FilterBar";
-import { projects } from "@/data/projects";
 
 export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [projects, setProjects] = useState<any[]>([]);
+  const [heroImage, setHeroImage] = useState<string>("/images/general/aerial-view-streets-office-building-business-district.jpg");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch(`/api/data/projects?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success) {
+          setProjects(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to load projects", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    const fetchProjectsPageData = async () => {
+      try {
+        const res = await fetch(`/api/data/projectsPageData?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success && data.data && data.data.heroImage) {
+          setHeroImage(data.data.heroImage);
+        }
+      } catch (err) {
+        console.error("Failed to load projects page data", err);
+      }
+    };
+    
+    fetchProjects();
+    fetchProjectsPageData();
+  }, []);
 
   const filtered = useMemo(() => {
     if (activeFilter === "All") return projects;
     return projects.filter((p) => p.category === activeFilter);
-  }, [activeFilter]);
+  }, [activeFilter, projects]);
 
   return (
     <>
       {/* Hero */}
       <section className="relative pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center overflow-hidden">
         <Image
-          src="/images/general/aerial-view-streets-office-building-business-district.jpg"
+          src={heroImage}
           alt="Our Projects"
           fill
           className="object-cover img-cinematic"

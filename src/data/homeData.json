@@ -1,0 +1,31 @@
+{
+  "featuredProjects": [
+    {
+      "id": 1,
+      "title": "Marina Bay Sands",
+      "visibility": "Homepage",
+      "imageUrl": "/images/projects/hotel-lobby-01.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Louvre Abu Dhabi",
+      "visibility": "Homepage",
+      "imageUrl": "/images/projects/facade-01.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Burj Al Arab",
+      "visibility": "Homepage",
+      "imageUrl": "/images/projects/landscape-01.jpg"
+    }
+  ],
+  "heroImages": [
+    "/images/general/5be3e577-43d5-405a-a0dc-235491714475-1-1-768x512_upscayl_2x_upscayl-standard-4x.png",
+    "/images/general/59.jpg",
+    "/images/general/491465886_18499853011022325_2957532526871004549_n.jpg",
+    "/images/general/texture-perspective-transport-motion-roadside-travel.jpg",
+    "/images/general/aerial-view-streets-office-building-business-district.jpg",
+    "/images/general/vertical-distant-shot-singapore-marina-bay-sands-nighttime-singapore.jpg",
+    "/images/general/view-light-lamp-with-futuristic-design.jpg"
+  ]
+}

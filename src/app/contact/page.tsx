@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
@@ -7,30 +8,36 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import { ContactForm } from "@/components/ui/ContactForm";
 
-const offices = [
-  {
-    city: "Dubai",
-    address: "Dubai Design District\nBuilding 4, Office 301\nDubai, UAE",
-    phone: "+971 4 585 0000",
-    email: "dubai@smithtait.com",
-    hours: "Sun–Thu: 9:00 AM – 6:00 PM",
-  },
-  {
-    city: "London",
-    address: "175 Gray's Inn Road\nWC1X 8UE\nLondon, UK",
-    phone: "+44 20 7000 0000",
-    email: "london@smithtait.com",
-    hours: "Mon–Fri: 9:00 AM – 5:30 PM",
-  },
-];
-
 export default function ContactPage() {
+  const [offices, setOffices] = useState<any[]>([]);
+  const [heroImage, setHeroImage] = useState<string>("/images/general/view-light-lamp-with-futuristic-design.jpg");
+
+  useEffect(() => {
+    const fetchContactData = async () => {
+      try {
+        const res = await fetch(`/api/data/contactData?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success && data.data) {
+          if (data.data.offices) {
+            setOffices(data.data.offices);
+          }
+          if (data.data.heroImage) {
+            setHeroImage(data.data.heroImage);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch contact data", err);
+      }
+    };
+    fetchContactData();
+  }, []);
+
   return (
     <>
       {/* Hero */}
       <section className="relative pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center overflow-hidden">
         <Image
-          src="/images/general/view-light-lamp-with-futuristic-design.jpg"
+          src={heroImage}
           alt="Contact Smith Tait"
           fill
           className="object-cover img-cinematic"

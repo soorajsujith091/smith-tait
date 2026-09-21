@@ -1,0 +1,70 @@
+{
+  "areasFocused": [
+    {
+      "category": "Specialist Areas",
+      "items": [
+        {
+          "title": "Interiors",
+          "image": "/images/projects/hotel-lobby-01.jpg",
+          "href": "/expertise#interiors"
+        },
+        {
+          "title": "Facades",
+          "image": "/images/projects/facade-01.jpg",
+          "href": "/expertise#facades"
+        },
+        {
+          "title": "Landscape",
+          "image": "/images/projects/landscape-01.jpg",
+          "href": "/expertise#landscape"
+        },
+        {
+          "title": "Master Planning",
+          "image": "/images/projects/public-realm-01.jpg",
+          "href": "/expertise#master-planning"
+        }
+      ]
+    },
+    {
+      "category": "Project Types",
+      "items": [
+        {
+          "title": "Residential",
+          "image": "/images/projects/residential-01.jpg",
+          "href": "/expertise#residential"
+        },
+        {
+          "title": "Hospitality",
+          "image": "/images/projects/hotel-lobby-01.jpg",
+          "href": "/expertise#hospitality"
+        },
+        {
+          "title": "Public Realm",
+          "image": "/images/projects/public-realm-01.jpg",
+          "href": "/expertise#public-realm"
+        },
+        {
+          "title": "Large-Scale Mixed-Use",
+          "image": "/images/projects/facade-02.jpg",
+          "href": "/expertise#mixed-use"
+        }
+      ]
+    },
+    {
+      "category": "Design Services",
+      "items": [
+        {
+          "title": "Supervision",
+          "image": "/images/projects/facade-01.jpg",
+          "href": "/expertise#supervision"
+        },
+        {
+          "title": "Value Engineering",
+          "image": "/images/projects/landscape-01.jpg",
+          "href": "/expertise#value-engineering"
+        }
+      ]
+    }
+  ],
+  "heroImage": ""
+}

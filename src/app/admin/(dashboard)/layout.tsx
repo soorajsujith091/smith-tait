@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "@/components/admin/Sidebar";
 import { Search, Bell, Menu, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AdminDashboardLayout({
   children,
@@ -11,6 +13,46 @@ export default function AdminDashboardLayout({
   children: React.ReactNode;
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [profile, setProfile] = useState({ name: "Admin User", role: "Lead Architect", image: "/images/general/Nour2.webp" });
+  const [leadsCount, setLeadsCount] = useState(0);
+  
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      router.push(`/admin/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch(`/api/data/profile?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success && data.data) {
+          setProfile(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch profile");
+      }
+    };
+    
+    const fetchLeadsCount = async () => {
+      try {
+        const res = await fetch(`/api/data/leads?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success && data.data) {
+          setLeadsCount(data.data.length);
+        }
+      } catch (err) {
+        console.error("Failed to fetch leads");
+      }
+    };
+
+    fetchProfile();
+    fetchLeadsCount();
+  }, []);
 
   return (
     <div className="flex h-screen bg-[var(--color-ink-dark)] overflow-hidden relative">
@@ -38,6 +80,9 @@ export default function AdminDashboardLayout({
               <Search size={18} className="text-[var(--color-grey)]" />
               <input
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearch}
                 placeholder="Search luminaire specs, plans, entries..."
                 className="bg-transparent border-none outline-none text-sm font-body text-[var(--color-white)] w-full ml-3 placeholder-[var(--color-grey)]/60"
               />
@@ -45,19 +90,23 @@ export default function AdminDashboardLayout({
           </div>
           
           <div className="flex items-center gap-6">
-            <button className="relative text-[var(--color-grey)] hover:text-[var(--color-accent)] transition-colors">
+            <Link href="/admin/contact" className="relative text-[var(--color-grey)] hover:text-[var(--color-accent)] transition-colors" title="Contact Leads">
               <Bell size={20} />
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-[var(--color-accent)] rounded-full"></span>
-            </button>
-            <div className="flex items-center gap-3 pl-6 border-l border-white/5">
+              {leadsCount > 0 && (
+                <span className="absolute -top-2 -right-2 w-4 h-4 bg-[var(--color-accent)] text-[var(--color-ink-dark)] font-bold text-[9px] flex items-center justify-center rounded-full">
+                  {leadsCount > 9 ? '9+' : leadsCount}
+                </span>
+              )}
+            </Link>
+            <Link href="/admin/settings" className="flex items-center gap-3 pl-6 border-l border-white/5 hover:opacity-80 transition-opacity cursor-pointer" title="Go to Settings">
               <div className="w-10 h-10 rounded-full overflow-hidden bg-white/10 relative">
-                <Image src="/images/general/Nour2.webp" alt="Admin User" fill className="object-cover" />
+                <Image src={profile.image} alt={profile.name} fill className="object-cover" />
               </div>
               <div className="hidden md:block">
-                <p className="text-sm font-display text-[var(--color-white)]">Admin User</p>
-                <p className="text-[10px] uppercase tracking-widest text-[var(--color-grey)]">Lead Architect</p>
+                <p className="text-sm font-display text-[var(--color-white)]">{profile.name}</p>
+                <p className="text-[10px] uppercase tracking-widest text-[var(--color-grey)]">{profile.role}</p>
               </div>
-            </div>
+            </Link>
           </div>
         </header>
 

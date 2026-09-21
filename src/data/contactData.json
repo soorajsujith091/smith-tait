@@ -1,0 +1,23 @@
+{
+  "offices": [
+    {
+      "city": "Dubai",
+      "address": "Dubai Design District\nBuilding 4, Office 301\nDubai, UAE",
+      "phone": "+971 4 585 0000",
+      "email": "dubai@smithtait.com",
+      "hours": "Sun-Thu: 9:00 AM - 6:00 PM"
+    }
+  ],
+  "socials": [
+    {
+      "platform": "LinkedIn",
+      "url": "https://linkedin.com"
+    },
+    {
+      "platform": "Instagram",
+      "url": "https://instagram.com"
+    }
+  ],
+  "generalEmail": "hello@smithtait.com",
+  "heroImage": ""
+}

@@ -1,19 +1,62 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
-import { newsArticles } from "@/data/news";
+import { FilterBar } from "@/components/ui/FilterBar";
 
 export default function NewsPage() {
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [newsArticles, setNewsArticles] = useState<any[]>([]);
+  const [heroImage, setHeroImage] = useState<string>("/images/general/park-city.jpg");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const res = await fetch(`/api/data/news?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success) {
+          setNewsArticles(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to load news", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    const fetchNewsPageData = async () => {
+      try {
+        const res = await fetch(`/api/data/newsPageData?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success && data.data && data.data.heroImage) {
+          setHeroImage(data.data.heroImage);
+        }
+      } catch (err) {
+        console.error("Failed to load news page data", err);
+      }
+    };
+    
+    fetchNews();
+    fetchNewsPageData();
+  }, []);
+
+  const filteredNews = activeFilter === "All" 
+    ? newsArticles 
+    : newsArticles.filter((article) => article.category === activeFilter);
+
+  const categories = ["All", ...Array.from(new Set(newsArticles.map((a) => a.category).filter(Boolean)))];
+
   return (
     <>
       {/* Hero */}
       <section className="relative pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center overflow-hidden">
         <Image
-          src="/images/general/park-city.jpg"
+          src={heroImage}
           alt="News & Insights"
           fill
           className="object-cover img-cinematic"

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,15 +9,50 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import { QuoteBlock } from "@/components/ui/QuoteBlock";
 import { TeamCard } from "@/components/ui/TeamCard";
-import { teamMembers } from "@/data/team";
 
 export default function AboutPage() {
+  const [teamMembers, setTeamMembers] = useState<any[]>([]);
+  const [aboutData, setAboutData] = useState<any>({
+    heroHeading: "Defining Space Through Light",
+    storyHeading: "From 1930s Modernism to Contemporary Light",
+    storyParagraph1: "Smith Tait traces its origins...",
+    storyParagraph2: "Today, Smith Tait carries that same conviction...",
+    storyImage: "/images/general/about-01.jpg"
+  });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [teamRes, aboutRes] = await Promise.all([
+          fetch(`/api/data/team?t=${new Date().getTime()}`),
+          fetch(`/api/data/aboutData?t=${new Date().getTime()}`)
+        ]);
+        
+        const teamData = await teamRes.json();
+        const aboutDataRes = await aboutRes.json();
+        
+        if (teamData.success) {
+          setTeamMembers(teamData.data.slice(0, 4));
+        }
+        if (aboutDataRes.success) {
+          setAboutData(aboutDataRes.data);
+        }
+      } catch (err) {
+        console.error("Failed to load data", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       {/* Hero */}
       <section className="relative pt-40 pb-24 md:pt-64 md:pb-32 min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center overflow-hidden">
         <Image
-          src="/images/general/about-01.jpg"
+          src={aboutData.heroImage || "/images/general/about-01.jpg"}
           alt="About Smith Tait"
           fill
           className="object-cover img-cinematic"
@@ -26,7 +62,7 @@ export default function AboutPage() {
         <div className="container-fluid relative z-10">
           <SectionLabel label="About" light />
           <AnimatedHeading as="h1" className="text-[var(--color-white)] max-w-4xl">
-            Defining Space Through Light
+            {aboutData.heroHeading}
           </AnimatedHeading>
         </div>
       </section>
@@ -43,32 +79,24 @@ export default function AboutPage() {
             >
               <SectionLabel label="Our Story" />
               <h2 className="text-heading font-display text-[var(--color-navy)] mb-6">
-                From 1930s Modernism to Contemporary Light
+                {aboutData.storyHeading}
               </h2>
               <p className="text-body text-[var(--color-grey)] leading-relaxed mb-4">
-                Smith Tait traces its origins to the pioneering modernist architect
-                Thomas Smith Tait, whose work in the 1930s redefined British
-                architecture. From the monumental St Andrew&apos;s House in Edinburgh to
-                the iconic Empire Exhibition Tower in Glasgow, Tait believed that
-                architecture should serve humanity through clarity, function, and
-                beauty.
+                {aboutData.storyParagraph1}
               </p>
               <p className="text-body text-[var(--color-grey)] leading-relaxed">
-                Today, Smith Tait carries that same conviction into the realm of
-                architectural lighting design. Based in Dubai, we operate at the
-                intersection of heritage and innovation — applying timeless design
-                principles to the most advanced lighting technologies available.
+                {aboutData.storyParagraph2}
               </p>
             </motion.div>
             <motion.div
-              className="relative aspect-[4/5] rounded-[var(--radius-media)] overflow-hidden"
+              className="relative aspect-[4/3] rounded-[var(--radius-media)] overflow-hidden"
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <Image
-                src="/images/general/about-01.jpg"
+                src={aboutData.storyImage || "/images/general/about-01.jpg"}
                 alt="Smith Tait studio workspace"
                 fill
                 className="object-cover img-cinematic"
@@ -136,8 +164,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-
-
       {/* Team Preview */}
       <section className="bg-section-paper section-padding">
         <div className="container-st">
@@ -154,11 +180,15 @@ export default function AboutPage() {
               <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
-            {teamMembers.map((member, i) => (
-              <TeamCard key={member.name} member={member} index={i} />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="text-center py-10 text-[var(--color-grey)]">Loading Team...</div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
+              {teamMembers.map((member, i) => (
+                <TeamCard key={member.name} member={member} index={i} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </>

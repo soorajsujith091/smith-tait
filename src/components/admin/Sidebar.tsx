@@ -17,6 +17,7 @@ import {
   Cpu,
   X,
   LogOut,
+  Target,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -35,6 +36,7 @@ const navItems = [
   { name: "Clients", href: "/admin/clients", icon: Users },
   { name: "News", href: "/admin/news", icon: FileText },
   { name: "Team", href: "/admin/team", icon: Users2 },
+  { name: "Focus Areas", href: "/admin/focus", icon: Target },
   { name: "Contact", href: "/admin/contact", icon: Mail },
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
@@ -95,12 +97,6 @@ export function Sidebar({ isOpen = false, onClose = () => {} }: SidebarProps) {
           <span>Log Out</span>
           <LogOut size={16} className="opacity-70 group-hover:opacity-100" />
         </Link>
-        <div className="px-4 flex items-center justify-between text-[var(--color-grey)]">
-          <span className="font-display text-[10px] tracking-[0.1em] uppercase">
-            CMS STUDIO V2.4
-          </span>
-          <Cpu size={14} className="opacity-50" />
-        </div>
       </div>
     </aside>
   );

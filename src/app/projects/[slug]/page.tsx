@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,15 +13,44 @@ import {
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { Lightbox } from "@/components/ui/Lightbox";
-import { projects } from "@/data/projects";
 
 export default function ProjectDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const projectIndex = projects.findIndex((p) => p.slug === slug);
-  const project = projects[projectIndex];
+  const [projects, setProjects] = useState<any[]>([]);
+  const [project, setProject] = useState<any | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const res = await fetch(`/api/data/projects?t=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success) {
+          setProjects(data.data);
+          const found = data.data.find((p: any) => p.slug === slug);
+          setProject(found || null);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProject();
+  }, [slug]);
+
+  if (isLoading) {
+    return (
+      <div className="bg-section-paper section-padding pt-32 min-h-screen flex items-center justify-center">
+        <div className="container-st text-center">
+          <h1 className="text-heading font-display">Loading...</h1>
+        </div>
+      </div>
+    );
+  }
 
   if (!project) {
     return (
@@ -36,9 +65,10 @@ export default function ProjectDetailPage() {
     );
   }
 
+  const projectIndex = projects.findIndex((p) => p.slug === slug);
   const prevProject = projectIndex > 0 ? projects[projectIndex - 1] : null;
   const nextProject =
-    projectIndex < projects.length - 1 ? projects[projectIndex + 1] : null;
+    projectIndex < projects.length - 1 && projectIndex >= 0 ? projects[projectIndex + 1] : null;
 
   const relatedProjects = projects
     .filter((p) => p.slug !== slug && p.category === project.category)
@@ -120,7 +150,7 @@ export default function ProjectDetailPage() {
 
           <div className="w-full max-w-6xl mx-auto xl:pr-12">
              <div className="columns-1 md:columns-2 gap-4 space-y-4">
-                {allImages.map((img, i) => (
+                {allImages.map((img: string, i: number) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 20 }}
@@ -166,7 +196,7 @@ export default function ProjectDetailPage() {
 
             <SectionLabel label="Project Credits" />
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-              {project.credits.map((credit, i) => (
+              {project.credits.map((credit: any, i: number) => (
                 <div key={credit.role}>
                   <span className="text-xs font-body text-[var(--color-navy)]/50 uppercase tracking-wider block mb-1">
                     {credit.role}
